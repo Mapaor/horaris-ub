@@ -18,18 +18,21 @@ app.get("/", (req, res) => {
 
 // Ruta per obtenir els horaris
 app.get("/api/horaris/*", async (req, res) => {
-    console.log(req.params['0']);
+    console.log("Ruta sol·licitada:", req.params[0]);
     const url = "https://www.ub.edu/guiaacademica/rest/guiaacademica/" + req.params[0];
     
     try {
         const response = await fetch(url);
-        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        if (!response.ok) {
+            // Obté el text de l'error i el retorna amb el mateix codi d'estat
+            const errorText = await response.text();
+            return res.status(response.status).json({ error: errorText });
+        }
         
         const data = await response.json();
         res.json(data);
     } catch (error) {
         console.error("Error en la petició:", error);
-        // Retorna sempre resposta en format JSON
         res.status(500).json({ error: "Error en la petició" });
     }
 });
