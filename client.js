@@ -1,23 +1,21 @@
 let itineraris = undefined;
 
-document.addEventListener("DOMContentLoaded",  () => {
-    const url = `/api/horaris/getItinerariGrau/TG1035/2024/CAT`;  
+document.addEventListener("DOMContentLoaded", () => {
+    // Actualitza la URL per enviar el "slug" com a paràmetre de consulta
+    const url = `/api/horaris?slug=getItinerariGrau/TG1035/2024/CAT`;
     let dom_itineraris = document.getElementById("itineraris");
     
     fetch(url)
-        .then(x => x.json())
+        .then(response => response.json())
         .then(json => {
             itineraris = json.datos;
             itineraris.forEach(itinerari => {
                 let dom_itinerari = createItinerari(itinerari);
-
-
-                dom_itineraris.appendChild(dom_itinerari)
+                dom_itineraris.appendChild(dom_itinerari);
             }); 
-            
         })
+        .catch(error => console.error("Error en la petició:", error));
 });
-
 
 function createItinerari(itinerari) {
     let dom_itinerari = document.createElement("fluent-option");
@@ -35,6 +33,8 @@ function setAssignatures(itinerari) {
     console.log(itinerari.assignatures);
     dom_assignatures.rowsData = itinerari.assignatures.map(x => ({ "Curs": x.cursImparticio, "Nom": x.descAssignatura }));
 }
+
+
 // /api/horaris/getItinerariGrau/TG1035/2024/CAT -> totes les assignatures
 // /api/horaris/getPlanificacioAssignatura/${id}/TG1035/2024/1/CAT -> info de l'assignatura
 

@@ -18,7 +18,7 @@ app.get("/", (req, res) => {
 
 // Ruta per obtenir els horaris
 app.get("/api/horaris/*", async (req, res) => {
-    console.log("Ruta sol·licitada:", req.params[0]);
+    console.log("API /api/horaris/ invocat amb:", req.params[0]);
     const url = "https://www.ub.edu/guiaacademica/rest/guiaacademica/" + req.params[0];
     
     try {
