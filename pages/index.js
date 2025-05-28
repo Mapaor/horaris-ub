@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import styles from "../styles/PaginaPrincipal.module.css";
 
 export default function Home() {

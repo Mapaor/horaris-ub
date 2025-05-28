@@ -1,7 +1,6 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { generaTaulaHoraris } from "../lib/utils";
-import styles from "../styles/Assignatura.module.css";
 
 export default function Assignatura() {
     const router = useRouter();
@@ -24,11 +23,9 @@ export default function Assignatura() {
         : "<p>No hi ha activitats disponibles.</p>";
 
     return (
-        <div className={styles.container}>
+        <div>
             <h1>{assignatura.descAssignatura}</h1>
-            <div className={styles["table-container"]}>
-                <div dangerouslySetInnerHTML={{ __html: taulaHoraris }} />
-            </div>
+            <div dangerouslySetInnerHTML={{ __html: taulaHoraris }} />
         </div>
     );
 }
