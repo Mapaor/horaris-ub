@@ -18,7 +18,7 @@ app.get("/", (req, res) => {
 
 // Ruta per obtenir els horaris
 app.get("/api/horaris/*", async (req, res) => {
-    console.log(req.params['0'])
+    console.log(req.params['0']);
     const url = "https://www.ub.edu/guiaacademica/rest/guiaacademica/" + req.params[0];
     
     try {
@@ -29,7 +29,8 @@ app.get("/api/horaris/*", async (req, res) => {
         res.json(data);
     } catch (error) {
         console.error("Error en la petició:", error);
-        res.status(500).send("Error en la petició");
+        // Retorna sempre resposta en format JSON
+        res.status(500).json({ error: "Error en la petició" });
     }
 });
 
