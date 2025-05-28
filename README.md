@@ -1,1 +1,13 @@
-# horaris-ub-server
+# Horaris Física UB
+Aquest repositori utilitza la API oficial de la UB per obtenir els horaris.
+
+La idea estar en recrear la [guia acadèmica](https://www.ub.edu/guiaacademica/?codEnsenyament=TG1035&curs=2024&idioma=CAT) però fent-la menys odiosa, és a dir separant les assignatures en URLs diferents. Perquè sinó la navegació és bastant horrible.
+
+S'utilitzen dos endpoints de l'API oficial de la UB diferent. Un per obtenir informació sobre el grau, i l'altre per obtenir informació sobre l'assignatura en un semestre concret  (horari, calendaris d'exàmens, professors, etc.).
+
+- Física: [https://www.ub.edu/guiaacademica/rest/guiaacademica/getItinerariGrau/TG1035/2024/CAT](https://www.ub.edu/guiaacademica/rest/guiaacademica/getItinerariGrau/TG1035/2024/CAT)
+- Assignatura d'exemple (Física EStadística - 2n semestre): [https://www.ub.edu/guiaacademica/rest/guiaacademica/getPlanificacioAssignatura/360580/TG1035/2024/2/CAT](https://www.ub.edu/guiaacademica/rest/guiaacademica/getPlanificacioAssignatura/360580/TG1035/2024/2/CAT)
+
+Mitjançant aquests JSON que es poden obtenir a través de la API, es crea una aplicació web amb NextJS que bàsicament obté la informació i la presenta. La web funciona en local fent des del repositori `yarn install` seguit de `yarn dev`. O funciona també en línia, important des de Vercel el repositori i configurant-lo com un projecte de NextJS.
+
+Es pot veure la web en funcionament aquí: (https://horaris-ub.vercel.app/)[https://horaris-ub.vercel.app/]
