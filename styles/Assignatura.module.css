@@ -1,0 +1,9 @@
+.container {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.table-container {
+    overflow-x: auto;
+    margin-top: 20px;
+}
