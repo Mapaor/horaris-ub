@@ -3,10 +3,10 @@
   "packageManager": "yarn@4.5.0",
   "version": "1.0.0",
   "description": "Servidor per obtenir els horaris UB",
-  "main": "script.js",
+  "main": "api/server.js",
   "type": "module",
   "scripts": {
-    "start": "node script.js"
+    "start": "node api/server.js"
   },
   "dependencies": {
     "@fluentui/web-components": "2.6.1",
