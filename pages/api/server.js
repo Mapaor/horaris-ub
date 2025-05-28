@@ -18,11 +18,13 @@ app.get("/", (req, res) => {
 });
 
 app.get("/:idAssignatura", async (req, res) => {
+    console.log("Petició rebuda per a l'assignatura:", req.params.idAssignatura);
     const idAssignatura = req.params.idAssignatura;
     const url = `https://www.ub.edu/guiaacademica/rest/guiaacademica/getPlanificacioAssignatura/${idAssignatura}/TG1035/2024/1/CAT`;
 
     try {
         const response = await fetch(url);
+        console.log("Resposta de l'API UB:", response.status, await response.text());
         if (!response.ok) {
             return res.status(response.status).send(`<h1>Error</h1><p>${await response.text()}</p>`);
         }
@@ -35,7 +37,7 @@ app.get("/:idAssignatura", async (req, res) => {
         const nomAssignatura = data.datos.assignatura.descAssignatura;
         const taulaHoraris = generaTaulaHoraris(data.datos.assignatura.activitats);
 
-        res.send(`
+        console.log("HTML generat:", `
             <!DOCTYPE html>
             <html lang="ca">
             <head>
@@ -54,8 +56,30 @@ app.get("/:idAssignatura", async (req, res) => {
             </body>
             </html>
         `);
+
+        res.send(`
+            <!DOCTYPE html>
+            <html lang="ca">
+            <head>
+                <meta charset="UTF-8">
+                <meta http-equiv="X-UA-Compatible" content="IE=edge">
+                <title>${nomAssignatura}</title>
+                <style>
+                    table { border-collapse: collapse; width: 100%; }
+                    table th, table td { border: 1px solid #ddd; padding: 8px; }
+                    table th { background-color: #f2f2f2; }
+                </style>
+            </head>
+            <body>
+                <h1>${nomAssignatura}</h1>
+                <p>Horari de l'assignatura</p>
+                ${taulaHoraris}
+            </body>
+            </html>
+        `);
     } catch (error) {
         res.status(500).send("<h1>Error del servidor</h1><p>No s'ha pogut obtenir la informació de l'assignatura.</p>");
+        console.error("Error al fer la petició:", error);
     }
 });
 

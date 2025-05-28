@@ -2,8 +2,7 @@
   "rewrites": [
     {
       "source": "/:idAssignatura",
-      "destination": "/api/server"
+      "destination": "/api/server/:idAssignatura"
     }
-  ],
-  "framework": "nextjs"
+  ]
 }
