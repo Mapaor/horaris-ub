@@ -20,6 +20,17 @@
     background-color: #005a9e;
 }
 
+.activeButton {
+    background-color: #004a8f;
+    font-weight: bold;
+}
+
+.container {
+    margin: 20px; /* Marges lleus a tota la pàgina */
+    padding: 10px; /* Espai intern per evitar que el contingut estigui massa a prop dels marges */
+    box-sizing: border-box; /* Assegura que el padding no afecti les dimensions del contenidor */
+}
+
 .assignatures {
     text-align: center;
 }
@@ -29,18 +40,50 @@
     padding: 0;
 }
 
-.assignatures li {
-    margin: 5px 0;
-    font-size: 18px;
+.assignaturaItem {
+    display: flex; /* Utilitzem flexbox per una estructura més rígida */
+    justify-content: space-between; /* Espai entre el nom i els botons */
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+    padding: 5px 0; /* Espai intern per evitar que el contingut estigui massa a prop */
+    border-bottom: 1px solid #ddd; /* Opcional: línia per separar les assignatures */
 }
 
 .assignaturaLink {
+    flex: 2; /* El nom de l'assignatura ocupa més espai */
     text-decoration: none;
     color: #0078d4;
     font-weight: bold;
+    text-align: left; /* Alinea el text a l'esquerra */
     transition: color 0.3s;
 }
 
 .assignaturaLink:hover {
     color: #005a9e;
+}
+
+.semestreButtons {
+    display: flex;
+    gap: 0; /* Elimina l'espai entre les columnes */
+    width: 125px; /* Amplada fixa per assegurar que les columnes ocupin només l'espai necessari */
+}
+
+.semestreButtonSmall {
+    flex: 1; /* Cada botó ocupa una columna fixa */
+    padding: 5px 10px;
+    font-size: 14px;
+    background-color: #0078d4;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    text-align: center;
+    white-space: nowrap; /* Evita que el text es trenqui en múltiples línies */
+}
+
+.semestreButtonSmall:hover {
+    background-color: #005a9e;
 }

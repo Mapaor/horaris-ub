@@ -1,31 +1,68 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { generaTaulaHoraris } from "../lib/utils";
+import styles from "../styles/Assignatura.module.css";
 
-export default function Assignatura() {
+export default function AssignaturaSemestreSelector() {
     const router = useRouter();
     const { idAssignatura } = router.query;
-    const [assignatura, setAssignatura] = useState(null);
+    const [semestresDisponibles, setSemestresDisponibles] = useState({ teOfertaSem1: false, teOfertaSem2: false });
 
     useEffect(() => {
         if (idAssignatura) {
-            fetch(`/api/horaris?slug=getPlanificacioAssignatura/${idAssignatura}/TG1035/2024/1/CAT`)
+            console.log("Carregant semestres per assignatura:", idAssignatura);
+            fetch(`/api/horaris?slug=getItinerariGrau/TG1035/2024/CAT`)
                 .then((response) => response.json())
-                .then((data) => setAssignatura(data.datos.assignatura))
-                .catch((error) => console.error("Error en carregar l'assignatura:", error));
+                .then((data) => {
+                    console.log("Resposta de l'API:", data);
+                    let assignaturaTrobada = null;
+
+                    // Iterar sobre els itineraris per buscar l'assignatura dins de `assignatures`
+                    for (const itinerari of data.datos) {
+                        assignaturaTrobada = itinerari.assignatures.find(
+                            (item) => item.idAssignatura === idAssignatura
+                        );
+                        if (assignaturaTrobada) break; // Aturar la cerca si es troba l'assignatura
+                    }
+
+                    if (assignaturaTrobada) {
+                        console.log("Assignatura trobada:", assignaturaTrobada);
+                        setSemestresDisponibles({
+                            teOfertaSem1: assignaturaTrobada.teOfertaSem1,
+                            teOfertaSem2: assignaturaTrobada.teOfertaSem2,
+                        });
+                    } else {
+                        console.error("Assignatura no trobada a l'API.");
+                    }
+                })
+                .catch((error) => console.error("Error en carregar els semestres disponibles:", error));
         }
     }, [idAssignatura]);
 
-    if (!assignatura) return <p>Carregant...</p>;
-
-    const taulaHoraris = assignatura.activitats
-        ? generaTaulaHoraris(assignatura.activitats)
-        : "<p>No hi ha activitats disponibles.</p>";
+    const handleSemestreClick = (semestre) => {
+        router.push(`/${idAssignatura}/${semestre}`);
+    };
 
     return (
-        <div>
-            <h1>{assignatura.descAssignatura}</h1>
-            <div dangerouslySetInnerHTML={{ __html: taulaHoraris }} />
+        <div className={styles.container}>
+            <h1>Selecciona el semestre</h1>
+            <div className={styles.semestreButtons}>
+                {semestresDisponibles.teOfertaSem1 && (
+                    <button
+                        className={styles.semestreButton}
+                        onClick={() => handleSemestreClick(1)}
+                    >
+                        1Sem
+                    </button>
+                )}
+                {semestresDisponibles.teOfertaSem2 && (
+                    <button
+                        className={styles.semestreButton}
+                        onClick={() => handleSemestreClick(2)}
+                    >
+                        2Sem
+                    </button>
+                )}
+            </div>
         </div>
     );
 }
