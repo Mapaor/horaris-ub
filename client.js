@@ -48,3 +48,23 @@ function createItinerari(itinerari) {
     });
     return dom_itinerari;
 }
+
+useEffect(() => {
+    if (idAssignatura) {
+        console.log("Carregant assignatura:", idAssignatura);
+        fetch(`/api/horaris?slug=getPlanificacioAssignatura/${idAssignatura}/TG1035/2024/1/CAT`)
+            .then((response) => {
+                console.log("Resposta del servidor:", response);
+                return response.json();
+            })
+            .then((data) => {
+                console.log("Dades rebudes:", data);
+                setAssignatura(data.datos.assignatura);
+            })
+            .catch((error) => console.error("Error en carregar l'assignatura:", error));
+    }
+}, [idAssignatura]);
+
+if (!assignatura) {
+    return <p>Error: No s'ha pogut carregar l'assignatura.</p>;
+}
