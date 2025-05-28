@@ -1,5 +1,5 @@
 # Horaris Física UB
-Aquest repositori utilitza la API oficial de la UB per obtenir els horaris.
+Aquest repositori utilitza la API oficial de la UB per obtenir i presentar els horaris acadèmics de les diferents assignatures.
 
 La idea estar en recrear la [guia acadèmica](https://www.ub.edu/guiaacademica/?codEnsenyament=TG1035&curs=2024&idioma=CAT) però fent-la menys odiosa, és a dir separant les assignatures en URLs diferents. Perquè sinó la navegació és bastant horrible.
 
