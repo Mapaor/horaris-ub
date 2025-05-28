@@ -1,0 +1,14 @@
+{
+  "name": "horaris-ub",
+  "version": "1.0.0",
+  "description": "Servidor per obtenir els horaris UB",
+  "main": "script.js",
+  "type": "module",
+  "scripts": {
+    "start": "node script.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "node-fetch": "^3.0.0"
+  }
+}
