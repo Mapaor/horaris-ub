@@ -4,5 +4,6 @@
       "source": "/:idAssignatura",
       "destination": "/api/server"
     }
-  ]
+  ],
+  "framework": "nextjs"
 }

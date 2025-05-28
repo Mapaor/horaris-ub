@@ -1,0 +1,51 @@
+.container {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+}
+
+.categories {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.categoryButton {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #0078d4;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.categoryButton:hover {
+    background-color: #005a9e;
+}
+
+.assignatures {
+    text-align: center;
+}
+
+.assignatures ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.assignatures li {
+    margin: 5px 0;
+    font-size: 18px;
+}
+
+.assignaturaLink {
+    text-decoration: none;
+    color: #0078d4;
+    font-weight: bold;
+    transition: color 0.3s;
+}
+
+.assignaturaLink:hover {
+    color: #005a9e;
+}
