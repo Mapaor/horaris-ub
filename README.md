@@ -6,8 +6,8 @@ La idea estar en recrear la [guia acadèmica](https://www.ub.edu/guiaacademica/?
 S'utilitzen dos endpoints de l'API oficial de la UB diferent. Un per obtenir informació sobre el grau, i l'altre per obtenir informació sobre l'assignatura en un semestre concret  (horari, calendaris d'exàmens, professors, etc.).
 
 - Física: [https://www.ub.edu/guiaacademica/rest/guiaacademica/getItinerariGrau/TG1035/2024/CAT](https://www.ub.edu/guiaacademica/rest/guiaacademica/getItinerariGrau/TG1035/2024/CAT)
-- Assignatura d'exemple (Física EStadística - 2n semestre): [https://www.ub.edu/guiaacademica/rest/guiaacademica/getPlanificacioAssignatura/360580/TG1035/2024/2/CAT](https://www.ub.edu/guiaacademica/rest/guiaacademica/getPlanificacioAssignatura/360580/TG1035/2024/2/CAT)
+- Assignatura d'exemple (Física Estadística - 2n semestre): [https://www.ub.edu/guiaacademica/rest/guiaacademica/getPlanificacioAssignatura/360580/TG1035/2024/2/CAT](https://www.ub.edu/guiaacademica/rest/guiaacademica/getPlanificacioAssignatura/360580/TG1035/2024/2/CAT)
 
-Mitjançant aquests JSON que es poden obtenir a través de la API, es crea una aplicació web amb NextJS que bàsicament obté la informació i la presenta. La web funciona en local fent des del repositori `yarn install` seguit de `yarn dev`. O funciona també en línia, important des de Vercel el repositori i configurant-lo com un projecte de NextJS.
+Aquest repositori crea una aplicació web amb el framework NextJS i utilitza aquests JSON obtinguts a través de la API per presentar la informació tal com es desitgi. La web funciona en local fent des del repositori `yarn install` seguit de `yarn dev`. O funciona també en línia, important des de Vercel el repositori i configurant-lo com un projecte de NextJS.
 
 Es pot veure la web en funcionament aquí: (https://horaris-ub.vercel.app/)[https://horaris-ub.vercel.app/]
