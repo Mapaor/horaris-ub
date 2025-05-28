@@ -2,6 +2,7 @@ import express from "express";
 import fetch from "node-fetch";
 import path from "path";
 import { fileURLToPath } from 'url';
+import helmet from "helmet";
 
 const app = express();
 const PORT = 3000;
@@ -43,7 +44,47 @@ app.get("/api/horaris", async (req, res) => {
     }
 });
 
+app.get("/:idAssignatura", async (req, res) => {
+    const idAssignatura = req.params.idAssignatura;
+    const url = `https://www.ub.edu/guiaacademica/rest/guiaacademica/getPlanificacioAssignatura/${idAssignatura}/TG1035/2024/1/CAT`;
+
+    try {
+        const response = await fetch(url);
+        if (!response.ok) {
+            const errorText = await response.text();
+            return res.status(response.status).send(`<h1>Error</h1><p>${errorText}</p>`);
+        }
+
+        const data = await response.json();
+        res.send(`
+            <!DOCTYPE html>
+            <html lang="ca">
+            <head>
+                <meta charset="UTF-8">
+                <title>Assignatura ${idAssignatura}</title>
+            </head>
+            <body>
+                <h1>Assignatura ${idAssignatura}</h1>
+                <pre>${JSON.stringify(data, null, 2)}</pre>
+                <a href="/">Torna a l'inici</a>
+            </body>
+            </html>
+        `);
+    } catch (error) {
+        console.error("Error en la petició:", error);
+        res.status(500).send("<h1>Error del servidor</h1><p>No s'ha pogut obtenir la informació de l'assignatura.</p>");
+    }
+});
+
 // Inicia el servidor
 app.listen(PORT, () => {
     console.log(`Servidor en funcionament a http://localhost:${PORT}`);
 });
+
+// Serveix el fitxer HTML per qualsevol altra ruta que no sigui una API
+app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "index.html"));
+});
+
+// Per poder gestionar rutes dimàmiques i evitar problemes de seguretat, utilitzem Helmet
+app.use(helmet());
