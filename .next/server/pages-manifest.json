@@ -3,6 +3,6 @@
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
   "/": "pages/index.js",
-  "/[idAssignatura]": "pages/[idAssignatura].js",
-  "/api/horaris": "pages/api/horaris.js"
+  "/api/horaris": "pages/api/horaris.js",
+  "/[idAssignatura]": "pages/[idAssignatura].js"
 }
