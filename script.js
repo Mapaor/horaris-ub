@@ -16,10 +16,16 @@ app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "index.html"));
 });
 
-// Ruta per obtenir els horaris
-app.get("/api/horaris/*", async (req, res) => {
-    console.log("API /api/horaris/ invocat amb:", req.params[0]);
-    const url = "https://www.ub.edu/guiaacademica/rest/guiaacademica/" + req.params[0];
+// Ruta per obtenir els horaris que llegeix la query parameter "slug"
+app.get("/api/horaris", async (req, res) => {
+    const slug = req.query.slug;
+    console.log("API /api/horaris invocat amb:", slug);
+    
+    if (!slug) {
+        return res.status(400).json({ error: "Falta el paràmetre 'slug'" });
+    }
+    
+    const url = "https://www.ub.edu/guiaacademica/rest/guiaacademica/" + slug;
     
     try {
         const response = await fetch(url);
