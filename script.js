@@ -12,6 +12,85 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 app.use(express.static(__dirname));
 
+function generaTaulaHoraris(activitats) {
+    let taula = `
+        <table border="1" style="width: 100%;">
+            <thead>
+                <tr>
+                    <th>Hora</th>
+                    <th>Dilluns</th>
+                    <th>Dimarts</th>
+                    <th>Dimecres</th>
+                    <th>Dijous</th>
+                    <th>Divendres</th>
+                </tr>
+            </thead>
+            <tbody>
+    `;
+
+    const horari = {};
+
+    activitats.forEach(activitat => {
+        activitat.grups.forEach(grup => {
+            grup.horaris.forEach(horariItem => {
+                const dies = extreuDies(horariItem.rrule);
+                const horaInici = extreuHora(horariItem.dtstart);
+                const horaFi = extreuHora(horariItem.dtend);
+                const franjaHoraria = `${horaInici}-${horaFi}`;
+
+                dies.forEach(dia => {
+                    if (!horari[franjaHoraria]) {
+                        horari[franjaHoraria] = { Dilluns: "", Dimarts: "", Dimecres: "", Dijous: "", Divendres: "" };
+                    }
+                    horari[franjaHoraria][dia] += `${grup.sigles} ${activitat.descTipusActivitat || ""}<br>`;
+                });
+            });
+        });
+    });
+
+    Object.keys(horari).sort().forEach(franja => {
+        taula += `
+            <tr>
+                <td>${franja}</td>
+                <td>${horari[franja].Dilluns || ""}</td>
+                <td>${horari[franja].Dimarts || ""}</td>
+                <td>${horari[franja].Dimecres || ""}</td>
+                <td>${horari[franja].Dijous || ""}</td>
+                <td>${horari[franja].Divendres || ""}</td>
+            </tr>
+        `;
+    });
+
+    taula += `
+            </tbody>
+        </table>
+    `;
+
+    return taula;
+}
+
+function extreuDies(rrule) {
+    const diesMap = {
+        MO: "Dilluns",
+        TU: "Dimarts",
+        WE: "Dimecres",
+        TH: "Dijous",
+        FR: "Divendres"
+    };
+    const match = rrule.match(/BYDAY=([^;]+)/);
+    if (match) {
+        return match[1].split(",").map(codi => diesMap[codi] || codi);
+    }
+    return [];
+}
+
+function extreuHora(dataHora) {
+    return new Date(dataHora).toLocaleTimeString("ca-ES", {
+        hour: "2-digit",
+        minute: "2-digit"
+    });
+}
+
 // Serveix el fitxer HTML per la pàgina principal
 app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "index.html"));
@@ -64,7 +143,14 @@ app.get("/:idAssignatura", async (req, res) => {
         const data = await response.json();
         console.log(`Dades rebudes: ${JSON.stringify(data, null, 2)}`);
 
+        if (!data.datos.assignatura) {
+            console.error("L'assignatura no s'ha trobat.");
+            return res.status(404).send("<h1>Error</h1><p>L'assignatura no s'ha trobat.</p>");
+        }
+
+        // Crida generaTaulaHoraris dins del bloc try
         const nomAssignatura = data.datos.assignatura.descAssignatura;
+        const taulaHoraris = generaTaulaHoraris(data.datos.assignatura.activitats);
 
         res.send(`
             <!DOCTYPE html>
@@ -96,14 +182,7 @@ app.get("/:idAssignatura", async (req, res) => {
             <body>
                 <h1>${nomAssignatura}</h1>
                 <p>Horari de l'assignatura</p>
-                <div id="horari"></div>
-                <script>
-                    const activitats = ${JSON.stringify(data.datos.assignatura.activitats)};
-                    ${generaTaulaHoraris.toString()}
-                    ${extreuDies.toString()}
-                    ${extreuHora.toString()}
-                    document.getElementById("horari").appendChild(generaTaulaHoraris(activitats));
-                </script>
+                ${taulaHoraris}
             </body>
             </html>
         `);
