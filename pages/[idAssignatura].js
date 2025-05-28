@@ -23,8 +23,6 @@ export default function Assignatura() {
         ? generaTaulaHoraris(assignatura.activitats)
         : "<p>No hi ha activitats disponibles.</p>";
 
-    console.log("ESTILS", styles);
-
     return (
         <div className={styles.container}>
             <h1>{assignatura.descAssignatura}</h1>

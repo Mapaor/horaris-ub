@@ -1,8 +1,0 @@
-{
-  "rewrites": [
-    {
-      "source": "/:idAssignatura",
-      "destination": "/api/server/:idAssignatura"
-    }
-  ]
-}
