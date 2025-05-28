@@ -10,4 +10,4 @@ S'utilitzen dos endpoints de l'API oficial de la UB diferent. Un per obtenir inf
 
 Aquest repositori crea una aplicació web amb el framework NextJS i utilitza aquests JSON obtinguts a través de la API per presentar la informació tal com es desitgi. La web funciona en local fent des del repositori `yarn install` seguit de `yarn dev`. O funciona també en línia, important des de Vercel el repositori i configurant-lo com un projecte de NextJS.
 
-Es pot veure la web en funcionament aquí: (https://horaris-ub.vercel.app/)[https://horaris-ub.vercel.app/]
+Es pot veure la web en funcionament aquí: [https://horaris-ub.vercel.app/](https://horaris-ub.vercel.app/)
