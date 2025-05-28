@@ -1,5 +1,6 @@
 {
-  "name": "horaris-ub",
+  "name": "horaris-ub-server",
+  "packageManager": "yarn@4.5.0",
   "version": "1.0.0",
   "description": "Servidor per obtenir els horaris UB",
   "main": "script.js",

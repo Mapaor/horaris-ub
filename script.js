@@ -17,8 +17,9 @@ app.get("/", (req, res) => {
 });
 
 // Ruta per obtenir els horaris
-app.get("/api/horaris", async (req, res) => {
-    const url = "https://www.ub.edu/guiaacademica/rest/guiaacademica/getPlanificacioAssignatura/360589/TG1035/2024/1/CAT";
+app.get("/api/horaris/*", async (req, res) => {
+    console.log(req.params['0'])
+    const url = "https://www.ub.edu/guiaacademica/rest/guiaacademica/" + req.params[0];
     
     try {
         const response = await fetch(url);
