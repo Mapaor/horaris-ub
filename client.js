@@ -12,7 +12,11 @@ document.addEventListener("DOMContentLoaded", () => {
             .then(response => response.json())
             .then(data => {
                 const dom_assignatures = document.getElementById("assignatures");
-                dom_assignatures.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+                dom_assignatures.innerHTML = ""; // Neteja contingut anterior
+
+                // Genera la taula d'horaris
+                const horariTaula = generaTaulaHoraris(data.datos.assignatura.activitats);
+                dom_assignatures.appendChild(horariTaula);
             })
             .catch(error => console.error("Error en carregar l'assignatura:", error));
     } else {
@@ -27,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 itineraris.forEach(itinerari => {
                     let dom_itinerari = createItinerari(itinerari);
                     dom_itineraris.appendChild(dom_itinerari);
-                }); 
+                });
             })
             .catch(error => console.error("Error en la petició:", error));
     }
@@ -59,5 +63,87 @@ function setAssignatures(itinerari) {
             </a>
         `;
         dom_assignatures.appendChild(dom_assignatura);
+    });
+}
+
+function generaTaulaHoraris(activitats) {
+    // Crea la taula
+    const taula = document.createElement("table");
+    taula.border = "1";
+    taula.style.width = "100%";
+
+    // Afegeix la capçalera amb els dies de la setmana
+    const capcalera = document.createElement("thead");
+    capcalera.innerHTML = `
+        <tr>
+            <th>Hora</th>
+            <th>Dilluns</th>
+            <th>Dimarts</th>
+            <th>Dimecres</th>
+            <th>Dijous</th>
+            <th>Divendres</th>
+        </tr>
+    `;
+    taula.appendChild(capcalera);
+
+    // Crea un objecte per organitzar les activitats per hora i dia
+    const horari = {};
+
+    activitats.forEach(activitat => {
+        activitat.grups.forEach(grup => {
+            grup.horaris.forEach(horariItem => {
+                const dies = extreuDies(horariItem.rrule);
+                const horaInici = extreuHora(horariItem.dtstart);
+                const horaFi = extreuHora(horariItem.dtend);
+                const franjaHoraria = `${horaInici}-${horaFi}`;
+
+                dies.forEach(dia => {
+                    if (!horari[franjaHoraria]) {
+                        horari[franjaHoraria] = { Dilluns: "", Dimarts: "", Dimecres: "", Dijous: "", Divendres: "" };
+                    }
+                    horari[franjaHoraria][dia] += `${grup.sigles} ${activitat.descTipusActivitat || ""}<br>`;
+                });
+            });
+        });
+    });
+
+    // Afegeix les files amb les hores i activitats
+    const cos = document.createElement("tbody");
+    Object.keys(horari).sort().forEach(franja => {
+        const fila = document.createElement("tr");
+        fila.innerHTML = `
+            <td>${franja}</td>
+            <td>${horari[franja].Dilluns || ""}</td>
+            <td>${horari[franja].Dimarts || ""}</td>
+            <td>${horari[franja].Dimecres || ""}</td>
+            <td>${horari[franja].Dijous || ""}</td>
+            <td>${horari[franja].Divendres || ""}</td>
+        `;
+        cos.appendChild(fila);
+    });
+
+    taula.appendChild(cos);
+    return taula;
+}
+
+function extreuDies(rrule) {
+    const diesMap = {
+        MO: "Dilluns",
+        TU: "Dimarts",
+        WE: "Dimecres",
+        TH: "Dijous",
+        FR: "Divendres"
+    };
+    const match = rrule.match(/BYDAY=([^;]+)/);
+    if (match) {
+        return match[1].split(",").map(codi => diesMap[codi] || codi);
+    }
+    return [];
+}
+
+function extreuHora(dataHora) {
+    return new Date(dataHora).toLocaleTimeString("ca-ES", {
+        hour: "2-digit",
+        minute: "2-digit"
     });
 }

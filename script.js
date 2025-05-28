@@ -31,9 +31,9 @@ app.get("/api/horaris", async (req, res) => {
     try {
         const response = await fetch(url);
         if (!response.ok) {
-            // Obté el text de l'error i el retorna amb el mateix codi d'estat
             const errorText = await response.text();
-            return res.status(response.status).json({ error: errorText });
+            console.error(`Error en la resposta de l'API: ${errorText}`);
+            return res.status(response.status).send(`<h1>Error</h1><p>${errorText}</p>`);
         }
         
         const data = await response.json();
@@ -48,30 +48,67 @@ app.get("/:idAssignatura", async (req, res) => {
     const idAssignatura = req.params.idAssignatura;
     const url = `https://www.ub.edu/guiaacademica/rest/guiaacademica/getPlanificacioAssignatura/${idAssignatura}/TG1035/2024/1/CAT`;
 
+    console.log(`Sol·licitant dades per a l'assignatura amb ID: ${idAssignatura}`);
+    console.log(`URL de la petició: ${url}`);
+
     try {
         const response = await fetch(url);
+        console.log(`Estat de la resposta: ${response.status}`);
+
         if (!response.ok) {
             const errorText = await response.text();
+            console.error(`Error en la resposta de l'API: ${errorText}`);
             return res.status(response.status).send(`<h1>Error</h1><p>${errorText}</p>`);
         }
 
         const data = await response.json();
+        console.log(`Dades rebudes: ${JSON.stringify(data, null, 2)}`);
+
+        const nomAssignatura = data.datos.assignatura.descAssignatura;
+
         res.send(`
             <!DOCTYPE html>
             <html lang="ca">
             <head>
                 <meta charset="UTF-8">
-                <title>Assignatura ${idAssignatura}</title>
+                <title>${nomAssignatura}</title>
+                <style>
+                    table {
+                        border-collapse: collapse;
+                        margin: 20px 0;
+                        font-size: 1em;
+                        font-family: Arial, sans-serif;
+                        width: 100%;
+                    }
+                    table th, table td {
+                        border: 1px solid #dddddd;
+                        text-align: left;
+                        padding: 8px;
+                    }
+                    table th {
+                        background-color: #f2f2f2;
+                    }
+                    table tr:nth-child(even) {
+                        background-color: #f9f9f9;
+                    }
+                </style>
             </head>
             <body>
-                <h1>Assignatura ${idAssignatura}</h1>
-                <pre>${JSON.stringify(data, null, 2)}</pre>
-                <a href="/">Torna a l'inici</a>
+                <h1>${nomAssignatura}</h1>
+                <p>Horari de l'assignatura</p>
+                <div id="horari"></div>
+                <script>
+                    const activitats = ${JSON.stringify(data.datos.assignatura.activitats)};
+                    ${generaTaulaHoraris.toString()}
+                    ${extreuDies.toString()}
+                    ${extreuHora.toString()}
+                    document.getElementById("horari").appendChild(generaTaulaHoraris(activitats));
+                </script>
             </body>
             </html>
         `);
     } catch (error) {
-        console.error("Error en la petició:", error);
+        console.error("Error en la petició al servidor:", error);
         res.status(500).send("<h1>Error del servidor</h1><p>No s'ha pogut obtenir la informació de l'assignatura.</p>");
     }
 });
