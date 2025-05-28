@@ -1,4 +1,4 @@
-import { setAssignatures, generaTaulaHoraris, extreuDies, extreuHora } from "./api/utils.js";
+import { setAssignatures, generaTaulaHoraris, extreuDies, extreuHora } from "./lib/utils.js";
 
 let itineraris = undefined;
 

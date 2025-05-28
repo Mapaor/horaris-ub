@@ -3,7 +3,7 @@ import fetch from "node-fetch";
 import path from "path";
 import { fileURLToPath } from 'url';
 import { obtenirHoraris } from "./horaris.js";
-import { extreuDies, extreuHora, generaTaulaHoraris } from "./utils.js";
+import { extreuDies, extreuHora, generaTaulaHoraris } from "../lib/utils.js";
 import helmet from "helmet";
 const app = express();
 
