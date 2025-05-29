@@ -48,6 +48,7 @@
     margin-bottom: 10px;
     padding: 5px 0; /* Espai intern per evitar que el contingut estigui massa a prop */
     border-bottom: 1px solid #ddd; /* Opcional: línia per separar les assignatures */
+    padding-bottom: 10px;
 }
 
 .assignaturaLink {
@@ -116,4 +117,72 @@
     color: #0078d4; /* Aplica un color blau destacable */
     text-align: center; /* Centra el text */
     padding-bottom: 10px; /* Espai entre el text i la línia */
+}
+
+/* VERSIÓ MÒBIL */
+
+@media (max-width: 768px) {
+    .categories {
+        flex-direction: column; /* Canvia a una disposició vertical */
+        gap: 5px; /* Redueix l'espai entre elements */
+    }
+
+    .categoryButton {
+        font-size: 14px; /* Redueix la mida del text */
+        padding: 8px 15px; /* Ajusta el padding */
+    }
+
+    .container {
+        margin: 20px; /* Redueix els marges */
+        padding: 5px; /* Ajusta el padding intern */
+    }
+
+    .assignaturaItem {
+        flex-direction: column; /* Canvia a una disposició vertical */
+        align-items: flex-start; /* Alinea els elements a l'esquerra */
+        gap: 5px; /* Redueix l'espai entre elements */
+    }
+
+    .semestreButtons {
+        display: flex;
+        justify-content: flex-start; /* Alinea els botons al principi */
+        gap: 5px; /* Espai entre els botons */
+        width: 100%; /* Amplada completa per evitar solapaments */
+    }
+
+    .semestreButtonSmall {
+        flex: 0; /* Els botons ocupen només l'espai necessari */
+        padding: 3px 8px; /* Reduïm el padding per fer-los més petits */
+        font-size: 12px; /* Reduïm la mida del text */
+        background-color: #0078d4;
+        color: white;
+        border: none;
+        border-radius: 3px;
+        text-decoration: none;
+        cursor: pointer;
+        text-align: center;
+        white-space: nowrap; /* Evitem que el text es trenqui */
+    }
+
+    .semestreButtonSmall:last-child {
+        margin-left: 0; /* Elimina el marge automàtic per evitar que es desplaci a la dreta */
+    }
+
+    .semestreButtonSmall:hover {
+        background-color: #005a9e;
+    }
+
+    .assignatures ul {
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+
+    .assignaturaItem{
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+
+    /* .assignaturaLink {
+        margin-bottom: 20px;
+    } */
 }

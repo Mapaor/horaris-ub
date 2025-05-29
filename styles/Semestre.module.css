@@ -161,3 +161,26 @@
     color: #333;
     margin-bottom: 10px;
 }
+
+/* VERSIÓ MÒBIL */
+
+@media (max-width: 768px) {
+    .container {
+        margin: 20px; /* Redueix els marges */
+    }
+
+    .grupsContainer {
+        grid-template-columns: 1fr; /* Canvia a una sola columna */
+        gap: 10px; /* Redueix l'espai entre elements */
+    }
+
+    .tableContainer {
+        font-size: 14px; /* Redueix la mida del text */
+        margin-bottom: 20px; /* Ajusta l'espai inferior */
+    }
+
+    .examensContainer {
+        grid-template-columns: 1fr; /* Canvia a una sola columna */
+        gap: 10px; /* Redueix l'espai entre elements */
+    }
+}

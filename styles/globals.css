@@ -54,3 +54,24 @@ a:hover {
     color: #005a9e;
     text-decoration: underline;
 }
+
+/* VERSIÓ MÒBIL */
+
+@media (max-width: 768px) {
+    body {
+        font-size: 14px; /* Redueix la mida del text global */
+    }
+
+    h1 {
+        font-size: 22px; /* Ajusta la mida del text */
+        margin-bottom: 15px; /* Redueix l'espai inferior */
+    }
+
+    table {
+        font-size: 14px; /* Redueix la mida del text de les taules */
+    }
+
+    a {
+        font-size: 14px; /* Ajusta la mida del text dels enllaços */
+    }
+}

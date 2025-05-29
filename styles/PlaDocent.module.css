@@ -33,3 +33,23 @@
 .textDestacat {
     color: #005a9e;
 }
+
+/* VERSIÓ MÒBIL */
+
+@media (max-width: 768px) {
+    .container {
+        margin: 20px; /* Redueix els marges per pantalles petites */
+    }
+
+    .titolPrincipal {
+        font-size: 20px; /* Ajusta la mida del text */
+    }
+
+    .titolSubseccio {
+        font-size: 16px; /* Redueix lleugerament la mida del text */
+    }
+
+    .llista {
+        padding: 10px; /* Afegim espai intern per evitar que el contingut estigui massa a prop */
+    }
+}

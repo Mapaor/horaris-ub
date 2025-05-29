@@ -21,3 +21,20 @@
 .separator {
     color: #555;
 }
+
+/* VERSIÓ MÒBIL */
+
+@media (max-width: 768px) {
+    .header {
+        font-size: 14px; /* Redueix la mida del text */
+        margin-bottom: 10px; /* Ajusta l'espai inferior */
+    }
+
+    .breadcrumbLink {
+        font-size: 12px; /* Ajusta la mida del text dels enllaços */
+    }
+
+    .separator {
+        font-size: 12px; /* Ajusta la mida del text del separador */
+    }
+}
