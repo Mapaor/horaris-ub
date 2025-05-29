@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import styles from "../../styles/PlaDocent.module.css";
+import Header from "../../components/Header";
 
 export default function PlaDocent() {
     const router = useRouter();
@@ -28,8 +29,15 @@ export default function PlaDocent() {
 
     const { dadesGenerals, definicioPlaDocent } = plaDocentData;
 
+    const breadcrumbs = [
+        { label: "Horaris", link: "/" },
+        { label: dadesGenerals.descripcioAssig, link: `/${idAssignatura}` },
+        { label: "Pla Docent" }
+    ];
+
     return (
         <div className={styles.container}>
+            <Header breadcrumbs={breadcrumbs} />
             <h1 className={styles.titolPrincipal}>{dadesGenerals.descripcioAssig}</h1>
             <h2 className={styles.titolSeccio}>Informació General</h2>
             <ul className={styles.llista}>

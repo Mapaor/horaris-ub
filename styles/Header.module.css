@@ -1,0 +1,23 @@
+.header {
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.breadcrumbLink {
+    color: #0078d4;
+    text-decoration: none;
+}
+
+.breadcrumbLink:hover {
+    text-decoration: underline;
+}
+
+.breadcrumb {
+    color: #333;
+}
+
+.separator {
+    color: #555;
+}

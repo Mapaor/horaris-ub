@@ -39,6 +39,21 @@ export default function Home() {
             acc[curs][tipus].push(assignatura);
             return acc;
         }, {});
+
+        // Ordenem les assignatures per tenir abans les obligatòries
+        Object.keys(agrupades).forEach((curs) => {
+            agrupades[curs] = Object.keys(agrupades[curs])
+                .sort((a, b) => {
+                    if (a === "Obligatòria de grau") return -1;
+                    if (b === "Obligatòria de grau") return 1;
+                    return 0;
+                })
+                .reduce((acc, tipus) => {
+                    acc[tipus] = agrupades[curs][tipus];
+                    return acc;
+                }, {});
+        });
+
         setAssignaturesPerCurs(agrupades);
     };
 
@@ -64,10 +79,10 @@ export default function Home() {
                 ))}
             </div>
             <div className={styles.assignatures}>
-                <h2>Llistat d'assignatures</h2>
+                {/* <h2 className={styles.titolBuit}>Llistat d'assignatures</h2> */}
                 {Object.keys(assignaturesPerCurs).map((curs) => (
                     <div key={curs}>
-                        <h3>{nomsCursos[curs] || curs}</h3>
+                        <h3 className={styles.cursSeccio}>{nomsCursos[curs] || curs}</h3>
                         {Object.keys(assignaturesPerCurs[curs]).map((tipus) => (
                             <div key={tipus}>
                                 <h4>{tipus}</h4>

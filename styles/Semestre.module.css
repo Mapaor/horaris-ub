@@ -65,6 +65,7 @@
     margin-top: 20px;
     overflow-x: auto; /* Permet desplaçament horitzontal si la taula és massa ampla */
     transition: transform 0.3s, box-shadow 0.3s; /* Afegim la transició */
+    margin-bottom: 40px;
 }
 
 .tableContainer table {

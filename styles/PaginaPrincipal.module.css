@@ -26,7 +26,7 @@
 }
 
 .container {
-    margin: 20px; /* Marges lleus a tota la pàgina */
+    margin: 40px; /* Marges lleus a tota la pàgina */
     padding: 10px; /* Espai intern per evitar que el contingut estigui massa a prop dels marges */
     box-sizing: border-box; /* Assegura que el padding no afecti les dimensions del contenidor */
 }
@@ -89,7 +89,7 @@
 }
 
 .footer {
-    margin-top: 20px;
+    margin-top: 60px;
     text-align: center;
 }
 
@@ -103,4 +103,17 @@
 .github:hover {
     transform: scale(1.2);
     color: #0078d4;
+}
+
+.titolBuit {
+    opacity: 0;
+}
+
+.cursSeccio {
+    margin-top: 60px;
+    font-size: 24px; /* Augmenta la mida del text */
+    font-weight: bold; /* Fa el text més gruixut */
+    color: #0078d4; /* Aplica un color blau destacable */
+    text-align: center; /* Centra el text */
+    padding-bottom: 10px; /* Espai entre el text i la línia */
 }

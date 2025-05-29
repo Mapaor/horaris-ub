@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import styles from "../styles/Assignatura.module.css";
+import Header from "../components/Header";
 
 export default function AssignaturaSemestreSelector() {
     const router = useRouter();
@@ -48,36 +49,42 @@ export default function AssignaturaSemestreSelector() {
         router.push(`/${idAssignatura}/pladocent`);
     };
 
+    const breadcrumbs = [
+        { label: "Horaris", link: "/" },
+        { label: semestresDisponibles.nomAssignatura || "Nom Assignatura" }
+    ];
+
     return (
-    <div className={styles.container}>
-        <h1>Selecciona el semestre</h1>
-        <div className={styles.semestreButtons}>
-            {semestresDisponibles.teOfertaSem1 && (
+        <div className={styles.container}>
+            <Header breadcrumbs={breadcrumbs} />
+            <h1>Selecciona el semestre</h1>
+            <div className={styles.semestreButtons}>
+                {semestresDisponibles.teOfertaSem1 && (
+                    <button
+                        className={styles.semestreButton}
+                        onClick={() => handleSemestreClick(1)}
+                    >
+                        1Sem
+                    </button>
+                )}
+                {semestresDisponibles.teOfertaSem2 && (
+                    <button
+                        className={styles.semestreButton}
+                        onClick={() => handleSemestreClick(2)}
+                    >
+                        2Sem
+                    </button>
+                )}
+            </div>
+            <h1>Consulta el pla docent</h1>
+            <div className={styles.plaDocentButtonContainer}>
                 <button
-                    className={styles.semestreButton}
-                    onClick={() => handleSemestreClick(1)}
+                    className={styles.plaDocentButton}
+                    onClick={handlePlaDocentClick}
                 >
-                    1Sem
+                    Pla Docent
                 </button>
-            )}
-            {semestresDisponibles.teOfertaSem2 && (
-                <button
-                    className={styles.semestreButton}
-                    onClick={() => handleSemestreClick(2)}
-                >
-                    2Sem
-                </button>
-            )}
+            </div>
         </div>
-        <h1>Consulta el pla docent</h1>
-        <div className={styles.plaDocentButtonContainer}>
-            <button
-                className={styles.plaDocentButton}
-                onClick={handlePlaDocentClick}
-            >
-                Pla Docent
-            </button>
-        </div>
-    </div>
     );
 }

@@ -2,6 +2,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { generaTaulaHoraris } from "../../lib/utils";
 import styles from "../../styles/Semestre.module.css";
+import Header from "../../components/Header";
 
 export default function AssignaturaSemestre() {
     const router = useRouter();
@@ -27,8 +28,15 @@ export default function AssignaturaSemestre() {
         (activitat) => activitat.descTipusActivitat === "Exàmens"
     );
 
+    const breadcrumbs = [
+        { label: "Horaris", link: "/" },
+        { label: assignatura.descAssignatura, link: `/${idAssignatura}` },
+        { label: `Semestre ${semestre}` }
+    ];
+
     return (
         <div className={styles.container}>
+            <Header breadcrumbs={breadcrumbs} />
             <h1 className={styles.titolPrincipal}>{assignatura.descAssignatura} - {semestre}Sem</h1>
 
             <h2 className={styles.titolSeccio}>Grups</h2>
