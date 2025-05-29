@@ -49,7 +49,7 @@ export default function Home() {
 
     return (
         <div className={styles.container}>
-            <h1>Horaris UB</h1>
+            <h1>Horaris Física UB</h1>
             <div className={styles.categories}>
                 {itineraris.map((itinerari) => (
                     <button
@@ -110,6 +110,11 @@ export default function Home() {
                     </div>
                 ))}
             </div>
+            <footer className={styles.footer}>
+                <a display="block" href="https://github.com/Mapaor/horaris-ub" target="_blank" rel="noopener noreferrer" className={styles.github}>
+                    <i class="fab fa-github"></i>
+                </a>
+            </footer>
         </div>
     );
 }

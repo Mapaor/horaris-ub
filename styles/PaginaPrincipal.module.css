@@ -87,3 +87,20 @@
 .semestreButtonSmall:hover {
     background-color: #005a9e;
 }
+
+.footer {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.github {
+    display: inline-block;
+    font-size: 2em;
+    color: black;
+    transition: transform 0.3s;
+}
+
+.github:hover {
+    transform: scale(1.2);
+    color: #0078d4;
+}

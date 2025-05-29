@@ -19,3 +19,28 @@
 .semestreButton:hover {
     background-color: #005a9e;
 }
+
+.plaDocentButtonContainer {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.plaDocentButton {
+    padding: 15px 30px;
+    font-size: 18px;
+    background-color: #0078d4;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.plaDocentButton:hover {
+    background-color: #005a9e;
+}
+
+.plaDocentIframe {
+    border: none;
+    margin-top: 20px;
+}

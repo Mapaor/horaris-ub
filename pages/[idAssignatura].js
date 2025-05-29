@@ -6,6 +6,7 @@ export default function AssignaturaSemestreSelector() {
     const router = useRouter();
     const { idAssignatura } = router.query;
     const [semestresDisponibles, setSemestresDisponibles] = useState({ teOfertaSem1: false, teOfertaSem2: false });
+    const [plaDocentDisponible, setPlaDocentDisponible] = useState(false);
 
     useEffect(() => {
         if (idAssignatura) {
@@ -30,6 +31,7 @@ export default function AssignaturaSemestreSelector() {
                             teOfertaSem1: assignaturaTrobada.teOfertaSem1,
                             teOfertaSem2: assignaturaTrobada.teOfertaSem2,
                         });
+                        setPlaDocentDisponible(!!assignaturaTrobada.calendariImparticio?.plaDocent);
                     } else {
                         console.error("Assignatura no trobada a l'API.");
                     }
@@ -42,27 +44,40 @@ export default function AssignaturaSemestreSelector() {
         router.push(`/${idAssignatura}/${semestre}`);
     };
 
+    const handlePlaDocentClick = () => {
+        router.push(`/${idAssignatura}/pladocent`);
+    };
+
     return (
-        <div className={styles.container}>
-            <h1>Selecciona el semestre</h1>
-            <div className={styles.semestreButtons}>
-                {semestresDisponibles.teOfertaSem1 && (
-                    <button
-                        className={styles.semestreButton}
-                        onClick={() => handleSemestreClick(1)}
-                    >
-                        1Sem
-                    </button>
-                )}
-                {semestresDisponibles.teOfertaSem2 && (
-                    <button
-                        className={styles.semestreButton}
-                        onClick={() => handleSemestreClick(2)}
-                    >
-                        2Sem
-                    </button>
-                )}
-            </div>
+    <div className={styles.container}>
+        <h1>Selecciona el semestre</h1>
+        <div className={styles.semestreButtons}>
+            {semestresDisponibles.teOfertaSem1 && (
+                <button
+                    className={styles.semestreButton}
+                    onClick={() => handleSemestreClick(1)}
+                >
+                    1Sem
+                </button>
+            )}
+            {semestresDisponibles.teOfertaSem2 && (
+                <button
+                    className={styles.semestreButton}
+                    onClick={() => handleSemestreClick(2)}
+                >
+                    2Sem
+                </button>
+            )}
         </div>
+        <h1>Consulta el pla docent</h1>
+        <div className={styles.plaDocentButtonContainer}>
+            <button
+                className={styles.plaDocentButton}
+                onClick={handlePlaDocentClick}
+            >
+                Pla Docent
+            </button>
+        </div>
+    </div>
     );
 }

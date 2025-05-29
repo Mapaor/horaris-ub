@@ -1,0 +1,28 @@
+.container {
+    margin: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.titolPrincipal {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.titolSeccio {
+    color: #0078d4;
+    margin-top: 20px;
+}
+
+.llista {
+    list-style-type: none;
+    padding: 0;
+}
+
+.elementLlista {
+    margin-bottom: 10px;
+}
+
+.textDestacat {
+    color: #005a9e;
+}
