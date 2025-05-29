@@ -11,6 +11,6 @@ S'utilitzen tres endpoints de l'API oficial de la UB diferent. Un per obtenir in
 
 Nota: La manera utilitzada per trobar aquests endpoints de la API de la UB ha estat simplement anar a la web de la guia acadèmica i obrir la consola de l'inspector del navegador filtrant els esdeveniments XHR. Així al fer clic en una assignatura, un pla docent, una aula... només cal que ens fixem en les URLs que apareixen, és a dir en les URLs que utilitza el navegador per fer la petició.
 
-Aquest repositori crea una aplicació web amb el framework NextJS i utilitza aquests JSON obtinguts a través de la API, amb un endpoint local, per presentar la informació tal com es desitgi. La web funciona en local fent des del repositori `yarn install` seguit de `yarn dev`. O funciona també en línia, important des de Vercel el repositori i configurant-lo com un projecte de NextJS.
+Aquest repositori crea una aplicació web amb el framework NextJS i utilitza aquests JSONs obtinguts a través de la API mitjançant un endpoint local, per presentar la informació tal com es desitja. La web funciona en local fent des del repositori `yarn install` seguit de `yarn dev`. O funciona també en línia, important des de Vercel el repositori i configurant-lo com un projecte de NextJS.
 
 Es pot veure la web en funcionament aquí: [https://horaris-ub.vercel.app/](https://horaris-ub.vercel.app/)
