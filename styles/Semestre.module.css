@@ -1,5 +1,5 @@
 .container {
-    margin: 20px;
+    margin: 40px;
     font-family: Arial, sans-serif;
 }
 
@@ -11,8 +11,15 @@
 
 .titolSeccio {
     color: #0078d4;
-    margin-top: 20px;
-    margin-bottom: 10px;
+    margin-top: 0px;
+    margin-bottom: 20px;
+}
+
+.titolSubseccio {
+    color: #0078d4;
+    font-size: 18px;
+    margin-top: 10px; 
+    margin-bottom: 10px; 
 }
 
 .grupsContainer {
@@ -56,6 +63,63 @@
 
 .tableContainer {
     margin-top: 20px;
+    overflow-x: auto; /* Permet desplaçament horitzontal si la taula és massa ampla */
+    transition: transform 0.3s, box-shadow 0.3s; /* Afegim la transició */
+}
+
+.tableContainer table {
+    width: 100%;
+    border-collapse: separate; /* Permet el border-radius complet */
+    border-spacing: 0; /* Eliminem espais entre les cel·les */
+    margin: 0 auto;
+    font-size: 16px;
+    text-align: center;
+    background-color: #f9f9f9;
+    border-radius: 8px; /* Aplicació completa del border-radius */
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Ajustem el color per fer-lo més subtil */
+    border: 1px solid #ddd; /* Afegim un borde suau per a tota la taula */
+}
+
+.tableContainer thead {
+    background-color: #0078d4;
+    color: white;
+}
+
+.tableContainer tbody tr:last-child td {
+    border-bottom-left-radius: 0; /* Eliminem el border-radius de les cel·les */
+    border-bottom-right-radius: 0;
+}
+
+.tableContainer th, .tableContainer td {
+    border-left: 1px solid #ddd; /* Línies verticals subtils */
+    padding: 10px;
+    border-radius: 0; /* Eliminem el border-radius de les cel·les */
+}
+
+.tableContainer th:first-child, .tableContainer td:first-child {
+    border-left: none; /* Eliminem la línia a la primera columna */
+}
+
+.tableContainer tbody tr:nth-child(even) {
+    background-color: #f1f1f1;
+}
+
+.tableContainer tbody tr:hover {
+    background-color: #e6f7ff; /* Color blau clar per ressaltar */
+}
+
+.tableContainer td {
+    color: #333;
+}
+
+.tableContainer th {
+    font-weight: bold;
+}
+
+.tableContainer:hover {
+    transform: scale(1.03); /* Ajustem el mateix efecte que grupCard */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 .examensContainer {
@@ -75,7 +139,7 @@
 }
 
 .examenCard:hover {
-    transform: scale(1.05);
+    transform: scale(1.03);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 

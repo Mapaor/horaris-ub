@@ -14,6 +14,13 @@
     margin-top: 20px;
 }
 
+.titolSubseccio {
+    color: #0078d4; /* Color blau */
+    font-size: 18px; /* Lleugerament més petit */
+    margin-top: 10px; /* Espai per sobre */
+    margin-bottom: 10px; /* Espai per sota */
+}
+
 .llista {
     list-style-type: none;
     padding: 0;

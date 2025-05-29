@@ -87,7 +87,15 @@ export default function PlaDocent() {
 
             <h2 className={styles.titolSeccio}>Metodologia</h2>
             <div dangerouslySetInnerHTML={{ __html: definicioPlaDocent.metodologia }} />
-
+            <h2 className={styles.titolSeccio}>Avaluació</h2>
+            <div>
+                <h3 className={styles.titolSubseccio}>Avaluació Continuada</h3>
+                <div dangerouslySetInnerHTML={{ __html: definicioPlaDocent.avaluacio.avaluacioContinuada }} />
+            </div>
+            <div>
+                <h3 className={styles.titolSubseccio}>Avaluació Única</h3>
+                <div dangerouslySetInnerHTML={{ __html: definicioPlaDocent.avaluacio.avaluacioUnica }} />
+            </div>
             <h2 className={styles.titolSeccio}>Bibliografia</h2>
             <ul className={styles.llista}>
                 {definicioPlaDocent.fontsInformacio.map((font) => (
