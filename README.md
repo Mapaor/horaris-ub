@@ -9,7 +9,7 @@ S'utilitzen tres endpoints de l'API oficial de la UB diferent. Un per obtenir in
 - Assignatura d'exemple (Física Estadística - 2n semestre): [https://www.ub.edu/guiaacademica/rest/guiaacademica/getPlanificacioAssignatura/360580/TG1035/2024/2/CAT](https://www.ub.edu/guiaacademica/rest/guiaacademica/getPlanificacioAssignatura/360580/TG1035/2024/2/CAT)
 - Pla docent d'exemple (Física Estadística): [https://www.ub.edu/pladocent/rest/plandocente/getPlaDocent/360580/2024/CAT](https://www.ub.edu/pladocent/rest/plandocente/getPlaDocent/360580/2024/CAT)
 
-Nota: La manera utilitzada per trobar aquests endpoints de la API de la UB ha estat simplement anar a la web de la guia acadèmica i obrir la consola de l'inspector del navegador filtrant els esdeveniments XHR. Així al fer clic en una assignatura, un pla docent, una aula... només cal que ens fixem en les URLs que apareixen, és a dir en les URLs a les quals el navegador fa la petició.
+Nota: La manera utilitzada per trobar aquests endpoints de la API de la UB ha estat simplement anar a la web de la guia acadèmica i obrir la consola de l'inspector del navegador filtrant els esdeveniments XHR. Així al fer clic en una assignatura, un pla docent, una aula... només cal que ens fixem en les URLs que apareixen, és a dir en les URLs que utilitza el navegador per fer la petició.
 
 Aquest repositori crea una aplicació web amb el framework NextJS i utilitza aquests JSON obtinguts a través de la API, amb un endpoint local, per presentar la informació tal com es desitgi. La web funciona en local fent des del repositori `yarn install` seguit de `yarn dev`. O funciona també en línia, important des de Vercel el repositori i configurant-lo com un projecte de NextJS.
 
