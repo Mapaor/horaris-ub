@@ -14,7 +14,7 @@ export default function Document() {
                 <meta property="og:title" content="Horaris Física UB" />
                 <meta property="og:description" content="Versió alternativa a la Guia Acadèmica de Física UB per consultar horaris, plans docents i altra informació sobre les assignatures del grau." />
                 <meta property="og:image" content="/horaris-ub.jpg" />
-                {/* <meta property="og:url" content="https://horaris.ub.fisica.cat" /> */}
+                <meta property="og:url" content="https://horaris.ub.fisica.cat" />
                 <meta property="og:type" content="website" />
             </Head>
             <body>
