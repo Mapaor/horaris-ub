@@ -31,6 +31,7 @@ export default function AssignaturaSemestreSelector() {
                         setSemestresDisponibles({
                             teOfertaSem1: assignaturaTrobada.teOfertaSem1,
                             teOfertaSem2: assignaturaTrobada.teOfertaSem2,
+                            nomAssignatura: assignaturaTrobada.descAssignatura,
                         });
                         setPlaDocentDisponible(!!assignaturaTrobada.calendariImparticio?.plaDocent);
                     } else {
@@ -60,30 +61,36 @@ export default function AssignaturaSemestreSelector() {
             <h1>Selecciona el semestre</h1>
             <div className={styles.semestreButtons}>
                 {semestresDisponibles.teOfertaSem1 && (
-                    <button
+                    <a
                         className={styles.semestreButton}
-                        onClick={() => handleSemestreClick(1)}
+                        href={`/${idAssignatura}/1`}
+                        target="_blank"
+                        rel="noopener noreferrer"
                     >
                         1Sem
-                    </button>
+                    </a>
                 )}
                 {semestresDisponibles.teOfertaSem2 && (
-                    <button
+                    <a
                         className={styles.semestreButton}
-                        onClick={() => handleSemestreClick(2)}
+                        href={`/${idAssignatura}/2`}
+                        target="_blank"
+                        rel="noopener noreferrer"
                     >
                         2Sem
-                    </button>
+                    </a>
                 )}
             </div>
             <h1>Consulta el pla docent</h1>
             <div className={styles.plaDocentButtonContainer}>
-                <button
+                <a
                     className={styles.plaDocentButton}
-                    onClick={handlePlaDocentClick}
+                    href={`/${idAssignatura}/pladocent`}
+                    target="_blank"
+                    rel="noopener noreferrer"
                 >
                     Pla Docent
-                </button>
+                </a>
             </div>
         </div>
     );

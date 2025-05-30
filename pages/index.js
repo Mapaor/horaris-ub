@@ -126,8 +126,14 @@ export default function Home() {
                 ))}
             </div>
             <footer className={styles.footer}>
-                <a display="block" href="https://github.com/Mapaor/horaris-ub" target="_blank" rel="noopener noreferrer" className={styles.github}>
-                    <i class="fab fa-github"></i>
+                <a
+                    className={styles.github}
+                    href="https://github.com/Mapaor/horaris-ub"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ display: "block" }}
+                >
+                    <i className="fab fa-github"></i>
                 </a>
             </footer>
         </div>
