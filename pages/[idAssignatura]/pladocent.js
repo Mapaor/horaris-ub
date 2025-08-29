@@ -1,7 +1,9 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import Head from "next/head";
 import styles from "../../styles/PlaDocent.module.css";
 import Header from "../../components/Header";
+import { getAnySeleccionat } from "../../lib/anyAcademic";
 
 export default function PlaDocent() {
     const router = useRouter();
@@ -10,8 +12,9 @@ export default function PlaDocent() {
 
     useEffect(() => {
         if (idAssignatura) {
+            const anySeleccionat = getAnySeleccionat();
             console.log("Carregant JSON del Pla Docent per assignatura:", idAssignatura);
-            const urlPlaDocent = `/api/pladocent?idAssignatura=${idAssignatura}`;
+            const urlPlaDocent = `/api/pladocent?idAssignatura=${idAssignatura}&any=${anySeleccionat}`;
 
             fetch(urlPlaDocent)
                 .then((response) => response.json())
@@ -37,6 +40,15 @@ export default function PlaDocent() {
 
     return (
         <div className={styles.container}>
+            <Head>
+                <title>{dadesGenerals.descripcioAssig} - Pla Docent</title>
+                <meta name="description" content={`Pla Docent de l'assignatura ${dadesGenerals.descripcioAssig}`} />
+                <meta property="og:title" content={`Pla Docent - ${dadesGenerals.descripcioAssig} ~ Horaris Física UB`}/>
+                <meta property="og:description" content={`Versió alternativa a la guia acadèmica pel pla docent de l'assignatura ${dadesGenerals.descripcioAssig}.`} />
+                <meta property="og:image" content="/horaris-ub.jpg" />
+                <meta property="og:url" content={`https://horaris.ub.fisica.cat/${idAssignatura}/pladocent`} />
+                <meta property="og:type" content="website" />
+            </Head>
             <Header breadcrumbs={breadcrumbs} />
             <h1 className={styles.titolPrincipal}>{dadesGenerals.descripcioAssig}</h1>
             <h2 className={styles.titolSeccio}>Informació General</h2>
@@ -119,4 +131,22 @@ export default function PlaDocent() {
             </ul>
         </div>
     );
+}
+
+export async function getStaticPaths() {
+    // No generem paths estàtics ja que dependrà de l'any seleccionat
+    return {
+        paths: [],
+        fallback: "blocking"
+    };
+}
+
+export async function getStaticProps({ params }) {
+    // Retornem props bàsiques, les dades es carregaran dinàmicament
+    return {
+        props: {
+            idAssignatura: params.idAssignatura
+        },
+        revalidate: 2592000 // Recarreguem la info un cop al mes
+    };
 }

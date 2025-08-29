@@ -1,8 +1,10 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { generaTaulaHoraris } from "../../lib/utils";
+import Head from "next/head";
 import styles from "../../styles/Semestre.module.css";
 import Header from "../../components/Header";
+import { getAnySeleccionat } from "../../lib/anyAcademic";
 
 export default function AssignaturaSemestre() {
     const router = useRouter();
@@ -11,7 +13,8 @@ export default function AssignaturaSemestre() {
 
     useEffect(() => {
         if (idAssignatura && semestre) {
-            fetch(`/api/horaris?slug=getPlanificacioAssignatura/${idAssignatura}/TG1035/2024/${semestre}/CAT`)
+            const anySeleccionat = getAnySeleccionat();
+            fetch(`/api/horaris?slug=getPlanificacioAssignatura/${idAssignatura}/TG1035/${anySeleccionat}/${semestre}/CAT`)
                 .then((response) => response.json())
                 .then((data) => setAssignatura(data.datos.assignatura))
                 .catch((error) => console.error("Error en carregar l'assignatura:", error));
@@ -36,6 +39,15 @@ export default function AssignaturaSemestre() {
 
     return (
         <div className={styles.container}>
+            <Head>
+                <title>{assignatura.descAssignatura} - {semestre} Sem</title>
+                <meta name="description" content={`Horaris i informació de l'assignatura ${assignatura.descAssignatura} pel semestre ${semestre}.`} />
+                <meta property="og:title" content={`${assignatura.descAssignatura} - ${semestre}Sem ~ Horaris Física UB`}/>
+                <meta property="og:description" content={`Versió alternativa a la guia acadèmica pels horaris i informació de l'assignatura ${assignatura.descAssignatura} pel semestre ${semestre}.`} />
+                <meta property="og:image" content="/horaris-ub.jpg" />
+                <meta property="og:url" content={`https://horaris.ub.fisica.cat/${idAssignatura}/${semestre}`} />
+                <meta property="og:type" content="website" />
+            </Head>
             <Header breadcrumbs={breadcrumbs} />
             <h1 className={styles.titolPrincipal}>{assignatura.descAssignatura} - {semestre}Sem</h1>
 
@@ -90,4 +102,23 @@ export default function AssignaturaSemestre() {
             </div>
         </div>
     );
+}
+
+export async function getStaticPaths() {
+    // No generem paths estàtics ja que dependrà de l'any seleccionat
+    return {
+        paths: [],
+        fallback: "blocking"
+    };
+}
+
+export async function getStaticProps({ params }) {
+    // Retornem props bàsiques, les dades es carregaran dinàmicament
+    return {
+        props: {
+            idAssignatura: params.idAssignatura,
+            semestre: params.semestre
+        },
+        revalidate: 2592000 // Recarreguem la info un cop al mes
+    };
 }

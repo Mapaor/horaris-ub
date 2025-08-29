@@ -1,7 +1,9 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import Head from "next/head";
 import styles from "../styles/Assignatura.module.css";
 import Header from "../components/Header";
+import { getAnySeleccionat } from "../lib/anyAcademic";
 
 export default function AssignaturaSemestreSelector() {
     const router = useRouter();
@@ -11,8 +13,9 @@ export default function AssignaturaSemestreSelector() {
 
     useEffect(() => {
         if (idAssignatura) {
+            const anySeleccionat = getAnySeleccionat();
             console.log("Carregant semestres per assignatura:", idAssignatura);
-            fetch(`/api/horaris?slug=getItinerariGrau/TG1035/2024/CAT`)
+            fetch(`/api/horaris?slug=getItinerariGrau/TG1035/${anySeleccionat}/CAT`)
                 .then((response) => response.json())
                 .then((data) => {
                     console.log("Resposta de l'API:", data);
@@ -57,6 +60,15 @@ export default function AssignaturaSemestreSelector() {
 
     return (
         <div className={styles.container}>
+            <Head>
+                <title>{semestresDisponibles.nomAssignatura || "Assignatura no definida"}</title>
+                <meta name="description" content={`Guia acadèmica alternativa per l'assignatura ${semestresDisponibles.nomAssignatura || "Assignatura no definida"}.`} />
+                <meta property="og:title" content={`${semestresDisponibles.nomAssignatura || "Assignatura no definida"} ~ Horaris Física UB`} />
+                <meta property="og:description" content={`Versió alternativa a la Guia Acadèmica de Física UB per consultar horaris, pla docent i altra informació sobre l'assignatura ${semestresDisponibles.nomAssignatura || "Assignatura no definida"}.`} />
+                <meta property="og:image" content="/horaris-ub.jpg" />
+                <meta property="og:url" content={`https://horaris.ub.fisica.cat/${idAssignatura}`} />
+                <meta property="og:type" content="website" />
+            </Head>
             <Header breadcrumbs={breadcrumbs} />
             <h1>Selecciona el semestre</h1>
             <div className={styles.semestreButtons}>
@@ -94,4 +106,22 @@ export default function AssignaturaSemestreSelector() {
             </div>
         </div>
     );
+}
+
+export async function getStaticPaths() {
+    // No generem paths estàtics ja que dependrà de l'any seleccionat
+    return {
+        paths: [],
+        fallback: "blocking"
+    };
+}
+
+export async function getStaticProps({ params }) {
+    // Retornem props bàsiques, les dades es carregaran dinàmicament
+    return {
+        props: {
+            idAssignatura: params.idAssignatura
+        },
+        revalidate: 2592000 // Recarreguem la info un cop al mes
+    };
 }

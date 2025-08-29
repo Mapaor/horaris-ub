@@ -1,14 +1,16 @@
 import { setAssignatures, generaTaulaHoraris, extreuDies, extreuHora } from "./lib/utils.js";
+import { getAnySeleccionat } from "./lib/anyAcademic.js";
 
 let itineraris = undefined;
 
 document.addEventListener("DOMContentLoaded", () => {
     const path = window.location.pathname;
+    const anySeleccionat = getAnySeleccionat();
 
     if (path !== "/") {
         // Si no estem a la pàgina principal, carrega el JSON de l'assignatura
         const idAssignatura = path.substring(1); // Extreu l'ID de la ruta
-        const url = `/api/horaris?slug=getPlanificacioAssignatura/${idAssignatura}/TG1035/2024/1/CAT`;
+        const url = `/api/horaris?slug=getPlanificacioAssignatura/${idAssignatura}/TG1035/${anySeleccionat}/1/CAT`;
 
         fetch(url)
             .then(response => response.json())
@@ -23,7 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
             .catch(error => console.error("Error en carregar l'assignatura:", error));
     } else {
         // Codi existent per carregar itineraris
-        const url = `/api/horaris?slug=getItinerariGrau/TG1035/2024/CAT`;
+        const url = `/api/horaris?slug=getItinerariGrau/TG1035/${anySeleccionat}/CAT`;
         let dom_itineraris = document.getElementById("itineraris");
 
         fetch(url)
@@ -51,8 +53,9 @@ function createItinerari(itinerari) {
 
 useEffect(() => {
     if (idAssignatura) {
+        const anySeleccionat = getAnySeleccionat();
         console.log("Carregant assignatura:", idAssignatura);
-        fetch(`/api/horaris?slug=getPlanificacioAssignatura/${idAssignatura}/TG1035/2024/1/CAT`)
+        fetch(`/api/horaris?slug=getPlanificacioAssignatura/${idAssignatura}/TG1035/${anySeleccionat}/1/CAT`)
             .then((response) => {
                 console.log("Resposta del servidor:", response);
                 return response.json();

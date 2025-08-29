@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
 import styles from "../styles/PaginaPrincipal.module.css";
+import { getAnySeleccionat, generaAnysAcademics } from "../lib/anyAcademic";
 
 export default function Home() {
     const [itineraris, setItineraris] = useState([]);
     const [assignaturesPerCurs, setAssignaturesPerCurs] = useState({});
     const [itinerariActiu, setItinerariActiu] = useState(null);
+    const [anySeleccionat, setAnySeleccionat] = useState(getAnySeleccionat());
+    const [dropdownObert, setDropdownObert] = useState(false);
 
     const nomsCursos = {
         1: "1r",
@@ -14,8 +17,34 @@ export default function Home() {
         Altres: "Altres"
     };
 
+    const anysAcademics = generaAnysAcademics();
+
+    const handleAnyChange = (nouAny) => {
+        setAnySeleccionat(nouAny);
+        setDropdownObert(false);
+        // Guardar l'any seleccionat al localStorage només quan es canvia
+        localStorage.setItem('anySeleccionat', nouAny.toString());
+        // Recarregar dades amb el nou any
+        fetch(`/api/horaris?slug=getItinerariGrau/TG1035/${nouAny}/CAT`)
+            .then((response) => response.json())
+            .then((data) => {
+                setItineraris(data.datos);
+                const itinerariPerDefecte = data.datos.find(
+                    (itinerari) => itinerari.descItinerari === "Menció en Física Fonamental"
+                );
+                if (itinerariPerDefecte) {
+                    setItinerariActiu(itinerariPerDefecte.idItinerari);
+                    agrupaAssignatures(itinerariPerDefecte.assignatures);
+                } else if (data.datos.length > 0) {
+                    setItinerariActiu(data.datos[0].idItinerari);
+                    agrupaAssignatures(data.datos[0].assignatures);
+                }
+            })
+            .catch((error) => console.error("Error en carregar els itineraris:", error));
+    };
+
     useEffect(() => {
-        fetch("/api/horaris?slug=getItinerariGrau/TG1035/2024/CAT")
+        fetch(`/api/horaris?slug=getItinerariGrau/TG1035/${anySeleccionat}/CAT`)
             .then((response) => response.json())
             .then((data) => {
                 setItineraris(data.datos);
@@ -28,7 +57,21 @@ export default function Home() {
                 }
             })
             .catch((error) => console.error("Error en carregar els itineraris:", error));
-    }, []);
+    }, [anySeleccionat]);
+
+    // Tancar dropdown quan es clica fora
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (dropdownObert && !event.target.closest(`.${styles.yearSelectorContainer}`)) {
+                setDropdownObert(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [dropdownObert]);
 
     const agrupaAssignatures = (assignatures) => {
         const agrupades = assignatures.reduce((acc, assignatura) => {
@@ -77,6 +120,33 @@ export default function Home() {
                         {itinerari.descItinerari}
                     </button>
                 ))}
+                <div className={styles.yearSelectorContainer}>
+                    <div 
+                        className={`${styles.customSelector} ${dropdownObert ? styles.open : ''}`}
+                        onClick={() => setDropdownObert(!dropdownObert)}
+                    >
+                        <span className={styles.selectedValue}>
+                            {anysAcademics.find(any => any.valor === anySeleccionat)?.etiqueta || 'Selecciona any'}
+                        </span>
+                        <span className={styles.arrow}>▼</span>
+                        {dropdownObert && (
+                            <div className={styles.dropdownMenu}>
+                                {anysAcademics.map((any) => (
+                                    <div
+                                        key={any.valor}
+                                        className={`${styles.dropdownItem} ${anySeleccionat === any.valor ? styles.selected : ''}`}
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            handleAnyChange(any.valor);
+                                        }}
+                                    >
+                                        {any.etiqueta}
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                </div>
             </div>
             <div className={styles.assignatures}>
                 {/* <h2 className={styles.titolBuit}>Llistat d'assignatures</h2> */}
@@ -138,4 +208,12 @@ export default function Home() {
             </footer>
         </div>
     );
+}
+
+export async function getStaticProps() {
+    // No utilitzem cap any específic aquí ja que les dades es carreguen dinàmicament
+    return {
+        props: {},
+        revalidate: 2592000 // Recarreguem la info un cop al mes
+    };
 }

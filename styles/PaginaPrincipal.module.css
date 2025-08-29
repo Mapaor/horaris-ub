@@ -1,8 +1,14 @@
 .categories {
     display: flex;
     justify-content: center;
+    align-items: stretch; /* Fa que tots els elements tinguin la mateixa alçada */
     gap: 10px;
     margin-bottom: 20px;
+    flex-wrap: nowrap;
+    width: 100%;
+    max-width: 1200px; /* Amplada màxima fixa */
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .categoryButton {
@@ -14,6 +20,12 @@
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    line-height: 1.3;
+    min-height: 44px; /* Alçada mínima per consistència */
 }
 
 .categoryButton:hover {
@@ -119,17 +131,169 @@
     padding-bottom: 10px; /* Espai entre el text i la línia */
 }
 
+.yearSelectorContainer {
+    position: relative;
+    display: flex;
+    align-items: stretch; /* S'estira per coincidir amb l'alçada dels botons */
+}
+
+.customSelector {
+    position: relative;
+    padding: 10px 35px 10px 20px;
+    font-size: 16px;
+    background-color: #0078d4;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 160px;
+    text-align: center;
+    font-weight: normal;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    user-select: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px; /* Mateixa alçada mínima que els botons */
+    line-height: 1.3;
+}
+
+.customSelector:hover {
+    background-color: #005a9e;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 120, 212, 0.25);
+}
+
+.customSelector.open {
+    background-color: #004a8f;
+    box-shadow: 0 0 0 3px rgba(0, 120, 212, 0.2);
+}
+
+.customSelector.open .selectedValue {
+    font-weight: bold;
+}
+
+.selectedValue {
+    flex: 1;
+}
+
+.arrow {
+    position: absolute;
+    right: 12px;
+    font-size: 12px;
+    transition: transform 0.3s ease;
+}
+
+.customSelector.open .arrow {
+    transform: rotate(180deg);
+}
+
+.dropdownMenu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: white;
+    border: 1px solid #e1e5e9;
+    border-radius: 8px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    margin-top: 4px;
+    overflow: hidden;
+    animation: dropdownFadeIn 0.2s ease-out;
+}
+
+@keyframes dropdownFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.dropdownItem {
+    padding: 12px 20px;
+    color: #2c2c2c;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.4;
+    transition: all 0.2s ease;
+    border-bottom: 1px solid #f5f5f5;
+}
+
+.dropdownItem:last-child {
+    border-bottom: none;
+}
+
+.dropdownItem:hover {
+    background-color: #f8f9fa;
+    color: #0078d4;
+}
+
+.dropdownItem.selected {
+    background-color: #e3f2fd;
+    color: #0078d4;
+    font-weight: 500;
+    position: relative;
+}
+
+.dropdownItem.selected::after {
+    content: '';
+    position: absolute;
+    right: 15px;
+    color: #0078d4;
+    font-weight: bold;
+}
+
 /* VERSIÓ MÒBIL */
 
 @media (max-width: 768px) {
     .categories {
         flex-direction: column; /* Canvia a una disposició vertical */
-        gap: 5px; /* Redueix l'espai entre elements */
+        gap: 8px; /* Redueix l'espai entre elements */
+        align-items: stretch; /* Manteniu l'estirament en versió mòbil */
     }
 
     .categoryButton {
         font-size: 14px; /* Redueix la mida del text */
         padding: 8px 15px; /* Ajusta el padding */
+        width: 100%;
+        max-width: 300px;
+        min-height: 40px; /* Alçada mínima ajustada per mòbil */
+        margin: 0 auto; /* Centra els botons */
+    }
+
+    .yearSelectorContainer {
+        width: 100%;
+        max-width: 300px;
+        margin: 0 auto; /* Centra el selector */
+    }
+
+    .customSelector {
+        font-size: 14px;
+        padding: 8px 30px 8px 15px;
+        width: 100%;
+        min-width: unset;
+        min-height: unset; /* Deixar que tingui l'alçada natural en mòbil */
+    }
+
+    .arrow {
+        right: 10px;
+        font-size: 10px;
+    }
+
+    .dropdownMenu {
+        margin-top: 2px;
+    }
+
+    .dropdownItem {
+        padding: 10px 15px;
+        font-size: 14px;
     }
 
     .container {
