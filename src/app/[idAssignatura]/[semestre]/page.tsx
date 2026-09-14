@@ -1,15 +1,17 @@
-import { useRouter } from "next/router";
+"use client";
+
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { generaTaulaHoraris } from "../../lib/utils";
-import Head from "next/head";
-import styles from "../../styles/Semestre.module.css";
-import Header from "../../components/Header";
-import { getAnySeleccionat } from "../../lib/anyAcademic";
+import { generaTaulaHoraris } from "../../../lib/utils";
+import styles from "../../../styles/Semestre.module.css";
+import Header from "../../../components/Header";
+import { getAnySeleccionat } from "../../../lib/anyAcademic";
 
 export default function AssignaturaSemestre() {
-    const router = useRouter();
-    const { idAssignatura, semestre } = router.query;
-    const [assignatura, setAssignatura] = useState(null);
+    const params = useParams();
+    const idAssignatura = params.idAssignatura as string;
+    const semestre = params.semestre as string;
+    const [assignatura, setAssignatura] = useState<any>(null);
 
     useEffect(() => {
         if (idAssignatura && semestre) {
@@ -28,7 +30,7 @@ export default function AssignaturaSemestre() {
         : "<p>No hi ha activitats disponibles.</p>";
 
     const examens = assignatura.activitats?.filter(
-        (activitat) => activitat.descTipusActivitat === "Exàmens"
+        (activitat: any) => activitat.descTipusActivitat === "Exàmens"
     );
 
     const breadcrumbs = [
@@ -39,28 +41,19 @@ export default function AssignaturaSemestre() {
 
     return (
         <div className={styles.container}>
-            <Head>
-                <title>{assignatura.descAssignatura} - {semestre} Sem</title>
-                <meta name="description" content={`Horaris i informació de l'assignatura ${assignatura.descAssignatura} pel semestre ${semestre}.`} />
-                <meta property="og:title" content={`${assignatura.descAssignatura} - ${semestre}Sem ~ Horaris Física UB`}/>
-                <meta property="og:description" content={`Versió alternativa a la guia acadèmica pels horaris i informació de l'assignatura ${assignatura.descAssignatura} pel semestre ${semestre}.`} />
-                <meta property="og:image" content="/horaris-ub.jpg" />
-                <meta property="og:url" content={`https://horaris.ub.fisica.cat/${idAssignatura}/${semestre}`} />
-                <meta property="og:type" content="website" />
-            </Head>
             <Header breadcrumbs={breadcrumbs} />
             <h1 className={styles.titolPrincipal}>{assignatura.descAssignatura} - {semestre}Sem</h1>
 
             <h2 className={styles.titolSeccio}>Grups</h2>
             <div className={styles.grupsContainer}>
-                {assignatura.activitats?.map((activitat) =>
-                    activitat.grups.map((grup) => (
+                {assignatura.activitats?.map((activitat: any) =>
+                    activitat.grups.map((grup: any) => (
                         <div key={grup.id} className={styles.grupCard}>
                             <h3 className={styles.grupTitle}>{grup.sigles}</h3>
                             <p className={styles.tipusActivitat}>{activitat.descTipusActivitat}</p>
                             <div className={styles.professors}>
                                 <strong>Professorat:</strong>
-                                {grup.professors.map((professor) => (
+                                {grup.professors.map((professor: any) => (
                                     <p key={professor.id}>
                                         {professor.nomComplet} - {professor.llengua}
                                     </p>
@@ -68,7 +61,7 @@ export default function AssignaturaSemestre() {
                             </div>
                             <div className={styles.aules}>
                                 <strong>Aules:</strong>
-                                {grup.espais.map((espai) => (
+                                {grup.espais.map((espai: any) => (
                                     <p key={espai.id}>{espai.nom}</p>
                                 ))}
                             </div>
@@ -84,16 +77,16 @@ export default function AssignaturaSemestre() {
 
             <h2 className={styles.titolSeccio}>Calendari d'exàmens</h2>
             <div className={styles.examensContainer}>
-                {examens?.map((activitat) =>
-                    activitat.grups.map((grup) => (
+                {examens?.map((activitat: any) =>
+                    activitat.grups.map((grup: any) => (
                         <div key={grup.id} className={styles.examenCard}>
                             <h3 className={styles.examenTitle}>{grup.sigles}</h3>
                             <p className={styles.tipusActivitat}>{activitat.descTipusActivitat} ({activitat.descActivitat})</p>
-                            {grup.horaris.map((horari) => (
+                            {grup.horaris.map((horari: any) => (
                                 <div key={horari.id} className={styles.horari}>
                                     <p><strong>Data:</strong> {horari.primerEsdev}</p>
                                     <p><strong>Horari:</strong> {horari.literal}</p>
-                                    <p><strong>Aules:</strong> {grup.espais.map((espai) => espai.nom).join(", ")}</p>
+                                    <p><strong>Aules:</strong> {grup.espais.map((espai: any) => espai.nom).join(", ")}</p>
                                 </div>
                             ))}
                         </div>
@@ -102,23 +95,4 @@ export default function AssignaturaSemestre() {
             </div>
         </div>
     );
-}
-
-export async function getStaticPaths() {
-    // No generem paths estàtics ja que dependrà de l'any seleccionat
-    return {
-        paths: [],
-        fallback: "blocking"
-    };
-}
-
-export async function getStaticProps({ params }) {
-    // Retornem props bàsiques, les dades es carregaran dinàmicament
-    return {
-        props: {
-            idAssignatura: params.idAssignatura,
-            semestre: params.semestre
-        },
-        revalidate: 2592000 // Recarreguem la info un cop al mes
-    };
 }

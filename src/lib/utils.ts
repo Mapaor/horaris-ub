@@ -1,4 +1,14 @@
-export function generaTaulaHoraris(activitats) {
+export type Grup = {
+    sigles: string;
+    horaris: { rrule: string; dtstart: string; dtend: string; }[];
+};
+
+export type Activitat = {
+    descTipusActivitat?: string;
+    grups: Grup[];
+};
+
+export function generaTaulaHoraris(activitats: Activitat[]): string {
     let taula = `
         <table border="1" style="width: 100%;">
             <thead>
@@ -14,7 +24,7 @@ export function generaTaulaHoraris(activitats) {
             <tbody>
     `;
 
-    const horari = {};
+    const horari: Record<string, Record<string, string>> = {};
 
     activitats.forEach(activitat => {
         activitat.grups.forEach(grup => {
@@ -55,8 +65,8 @@ export function generaTaulaHoraris(activitats) {
     return taula;
 }
 
-export function extreuDies(rrule) {
-    const diesMap = {
+export function extreuDies(rrule: string): string[] {
+    const diesMap: Record<string, string> = {
         MO: "Dilluns",
         TU: "Dimarts",
         WE: "Dimecres",
@@ -70,28 +80,9 @@ export function extreuDies(rrule) {
     return [];
 }
 
-export function extreuHora(dataHora) {
+export function extreuHora(dataHora: string): string {
     return new Date(dataHora).toLocaleTimeString("ca-ES", {
         hour: "2-digit",
         minute: "2-digit"
-    });
-}
-
-export function setAssignatures(itinerari) {
-    let dom_assignatures = document.getElementById("assignatures");
-    dom_assignatures.innerHTML = ""; // Neteja assignatures anteriors
-
-    itinerari.assignatures.sort((x, y) => parseInt(x.cursImparticio) - parseInt(y.cursImparticio));
-    console.log(itinerari.assignatures);
-
-    itinerari.assignatures.forEach(assignatura => {
-        let dom_assignatura = document.createElement("div");
-        dom_assignatura.className = "assignatura";
-        dom_assignatura.innerHTML = `
-            <a href="/${assignatura.idAssignatura}" class="assignatura-link">
-                ${assignatura.descAssignatura} (Curs: ${assignatura.cursImparticio})
-            </a>
-        `;
-        dom_assignatures.appendChild(dom_assignatura);
     });
 }

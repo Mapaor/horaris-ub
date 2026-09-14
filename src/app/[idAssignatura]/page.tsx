@@ -1,14 +1,18 @@
-import { useRouter } from "next/router";
+"use client";
+
+import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import Head from "next/head";
-import styles from "../styles/Assignatura.module.css";
-import Header from "../components/Header";
-import { getAnySeleccionat } from "../lib/anyAcademic";
+import styles from "../../styles/Assignatura.module.css";
+import Header from "../../components/Header";
+import { getAnySeleccionat } from "../../lib/anyAcademic";
+import Link from "next/link";
 
 export default function AssignaturaSemestreSelector() {
     const router = useRouter();
-    const { idAssignatura } = router.query;
-    const [semestresDisponibles, setSemestresDisponibles] = useState({ teOfertaSem1: false, teOfertaSem2: false });
+    const params = useParams();
+    const idAssignatura = params.idAssignatura as string;
+    
+    const [semestresDisponibles, setSemestresDisponibles] = useState({ teOfertaSem1: false, teOfertaSem2: false, nomAssignatura: "" });
     const [plaDocentDisponible, setPlaDocentDisponible] = useState(false);
 
     useEffect(() => {
@@ -21,12 +25,11 @@ export default function AssignaturaSemestreSelector() {
                     console.log("Resposta de l'API:", data);
                     let assignaturaTrobada = null;
 
-                    // Iterar sobre els itineraris per buscar l'assignatura dins de `assignatures`
                     for (const itinerari of data.datos) {
                         assignaturaTrobada = itinerari.assignatures.find(
-                            (item) => item.idAssignatura === idAssignatura
+                            (item: any) => item.idAssignatura === idAssignatura
                         );
-                        if (assignaturaTrobada) break; // Aturar la cerca si es troba l'assignatura
+                        if (assignaturaTrobada) break;
                     }
 
                     if (assignaturaTrobada) {
@@ -45,83 +48,50 @@ export default function AssignaturaSemestreSelector() {
         }
     }, [idAssignatura]);
 
-    const handleSemestreClick = (semestre) => {
-        router.push(`/${idAssignatura}/${semestre}`);
-    };
-
-    const handlePlaDocentClick = () => {
-        router.push(`/${idAssignatura}/pladocent`);
-    };
-
     const breadcrumbs = [
         { label: "Horaris", link: "/" },
         { label: semestresDisponibles.nomAssignatura || "Nom Assignatura" }
     ];
 
+    const title = semestresDisponibles.nomAssignatura || "Assignatura no definida";
+
     return (
         <div className={styles.container}>
-            <Head>
-                <title>{semestresDisponibles.nomAssignatura || "Assignatura no definida"}</title>
-                <meta name="description" content={`Guia acadèmica alternativa per l'assignatura ${semestresDisponibles.nomAssignatura || "Assignatura no definida"}.`} />
-                <meta property="og:title" content={`${semestresDisponibles.nomAssignatura || "Assignatura no definida"} ~ Horaris Física UB`} />
-                <meta property="og:description" content={`Versió alternativa a la Guia Acadèmica de Física UB per consultar horaris, pla docent i altra informació sobre l'assignatura ${semestresDisponibles.nomAssignatura || "Assignatura no definida"}.`} />
-                <meta property="og:image" content="/horaris-ub.jpg" />
-                <meta property="og:url" content={`https://horaris.ub.fisica.cat/${idAssignatura}`} />
-                <meta property="og:type" content="website" />
-            </Head>
             <Header breadcrumbs={breadcrumbs} />
             <h1>Selecciona el semestre</h1>
             <div className={styles.semestreButtons}>
                 {semestresDisponibles.teOfertaSem1 && (
-                    <a
+                    <Link
                         className={styles.semestreButton}
                         href={`/${idAssignatura}/1`}
                         target="_blank"
                         rel="noopener noreferrer"
                     >
                         1Sem
-                    </a>
+                    </Link>
                 )}
                 {semestresDisponibles.teOfertaSem2 && (
-                    <a
+                    <Link
                         className={styles.semestreButton}
                         href={`/${idAssignatura}/2`}
                         target="_blank"
                         rel="noopener noreferrer"
                     >
                         2Sem
-                    </a>
+                    </Link>
                 )}
             </div>
             <h1>Consulta el pla docent</h1>
             <div className={styles.plaDocentButtonContainer}>
-                <a
+                <Link
                     className={styles.plaDocentButton}
                     href={`/${idAssignatura}/pladocent`}
                     target="_blank"
                     rel="noopener noreferrer"
                 >
                     Pla Docent
-                </a>
+                </Link>
             </div>
         </div>
     );
-}
-
-export async function getStaticPaths() {
-    // No generem paths estàtics ja que dependrà de l'any seleccionat
-    return {
-        paths: [],
-        fallback: "blocking"
-    };
-}
-
-export async function getStaticProps({ params }) {
-    // Retornem props bàsiques, les dades es carregaran dinàmicament
-    return {
-        props: {
-            idAssignatura: params.idAssignatura
-        },
-        revalidate: 2592000 // Recarreguem la info un cop al mes
-    };
 }

@@ -1,5 +1,4 @@
-// Funció per calcular l'any acadèmic per defecte basant-se en el mes actual
-export const getAnyAcademicPerDefecte = () => {
+export const getAnyAcademicPerDefecte = (): number => {
     const avui = new Date();
     const mes = avui.getMonth() + 1; // getMonth() retorna 0-11, volem 1-12
     const anyActual = avui.getFullYear();
@@ -14,21 +13,24 @@ export const getAnyAcademicPerDefecte = () => {
     }
 };
 
-// Funció per obtenir l'any seleccionat del localStorage o per defecte l'any acadèmic calculat
-export const getAnySeleccionat = () => {
+export const getAnySeleccionat = (): number => {
     if (typeof window !== 'undefined') {
         const anyGuardat = localStorage.getItem('anySeleccionat');
         if (anyGuardat) {
-            return parseInt(anyGuardat);
+            return parseInt(anyGuardat, 10);
         }
     }
     return getAnyAcademicPerDefecte();
 };
 
-// Funció per generar la llista d'anys acadèmics des de 2009 fins a l'any per defecte
-export const generaAnysAcademics = () => {
+export type AnyAcademic = {
+    valor: number;
+    etiqueta: string;
+};
+
+export const generaAnysAcademics = (): AnyAcademic[] => {
     const anyPerDefecte = getAnyAcademicPerDefecte();
-    const anys = [];
+    const anys: AnyAcademic[] = [];
     
     for (let any = 2009; any <= anyPerDefecte; any++) {
         anys.push({

@@ -1,15 +1,24 @@
+"use client";
+
 import { useEffect, useState } from "react";
 import styles from "../styles/PaginaPrincipal.module.css";
-import { getAnySeleccionat, generaAnysAcademics } from "../lib/anyAcademic";
+import { getAnySeleccionat, generaAnysAcademics, AnyAcademic } from "../lib/anyAcademic";
+import Link from "next/link";
 
 export default function Home() {
-    const [itineraris, setItineraris] = useState([]);
-    const [assignaturesPerCurs, setAssignaturesPerCurs] = useState({});
-    const [itinerariActiu, setItinerariActiu] = useState(null);
-    const [anySeleccionat, setAnySeleccionat] = useState(getAnySeleccionat());
+    const [itineraris, setItineraris] = useState<any[]>([]);
+    const [assignaturesPerCurs, setAssignaturesPerCurs] = useState<Record<string, Record<string, any[]>>>({});
+    const [itinerariActiu, setItinerariActiu] = useState<string | null>(null);
+    const [anySeleccionat, setAnySeleccionat] = useState<number>(0);
     const [dropdownObert, setDropdownObert] = useState(false);
+    const [anysAcademics, setAnysAcademics] = useState<AnyAcademic[]>([]);
 
-    const nomsCursos = {
+    useEffect(() => {
+        setAnySeleccionat(getAnySeleccionat());
+        setAnysAcademics(generaAnysAcademics());
+    }, []);
+
+    const nomsCursos: Record<string, string> = {
         1: "1r",
         2: "2n",
         3: "3r",
@@ -17,9 +26,7 @@ export default function Home() {
         Altres: "Altres"
     };
 
-    const anysAcademics = generaAnysAcademics();
-
-    const handleAnyChange = (nouAny) => {
+    const handleAnyChange = (nouAny: number) => {
         setAnySeleccionat(nouAny);
         setDropdownObert(false);
         // Guardar l'any seleccionat al localStorage només quan es canvia
@@ -30,7 +37,7 @@ export default function Home() {
             .then((data) => {
                 setItineraris(data.datos);
                 const itinerariPerDefecte = data.datos.find(
-                    (itinerari) => itinerari.descItinerari === "Menció en Física Fonamental"
+                    (itinerari: any) => itinerari.descItinerari === "Menció en Física Fonamental"
                 );
                 if (itinerariPerDefecte) {
                     setItinerariActiu(itinerariPerDefecte.idItinerari);
@@ -44,16 +51,20 @@ export default function Home() {
     };
 
     useEffect(() => {
+        if (!anySeleccionat) return;
         fetch(`/api/horaris?slug=getItinerariGrau/TG1035/${anySeleccionat}/CAT`)
             .then((response) => response.json())
             .then((data) => {
                 setItineraris(data.datos);
                 const itinerariPerDefecte = data.datos.find(
-                    (itinerari) => itinerari.descItinerari === "Menció en Física Fonamental"
+                    (itinerari: any) => itinerari.descItinerari === "Menció en Física Fonamental"
                 );
                 if (itinerariPerDefecte) {
                     setItinerariActiu(itinerariPerDefecte.idItinerari);
                     agrupaAssignatures(itinerariPerDefecte.assignatures);
+                } else if (data.datos.length > 0) {
+                    setItinerariActiu(data.datos[0].idItinerari);
+                    agrupaAssignatures(data.datos[0].assignatures);
                 }
             })
             .catch((error) => console.error("Error en carregar els itineraris:", error));
@@ -61,8 +72,9 @@ export default function Home() {
 
     // Tancar dropdown quan es clica fora
     useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (dropdownObert && !event.target.closest(`.${styles.yearSelectorContainer}`)) {
+        const handleClickOutside = (event: MouseEvent) => {
+            const target = event.target as Element;
+            if (dropdownObert && target && !target.closest(`.${styles.yearSelectorContainer}`)) {
                 setDropdownObert(false);
             }
         };
@@ -73,7 +85,7 @@ export default function Home() {
         };
     }, [dropdownObert]);
 
-    const agrupaAssignatures = (assignatures) => {
+    const agrupaAssignatures = (assignatures: any[]) => {
         const agrupades = assignatures.reduce((acc, assignatura) => {
             const curs = assignatura.cursImparticio || "Altres";
             const tipus = assignatura.descTipusAssignatura || "Sense tipus";
@@ -81,7 +93,7 @@ export default function Home() {
             if (!acc[curs][tipus]) acc[curs][tipus] = [];
             acc[curs][tipus].push(assignatura);
             return acc;
-        }, {});
+        }, {} as Record<string, Record<string, any[]>>);
 
         // Ordenem les assignatures per tenir abans les obligatòries
         Object.keys(agrupades).forEach((curs) => {
@@ -91,7 +103,7 @@ export default function Home() {
                     if (b === "Obligatòria de grau") return 1;
                     return 0;
                 })
-                .reduce((acc, tipus) => {
+                .reduce((acc: any, tipus) => {
                     acc[tipus] = agrupades[curs][tipus];
                     return acc;
                 }, {});
@@ -100,10 +112,14 @@ export default function Home() {
         setAssignaturesPerCurs(agrupades);
     };
 
-    const handleItinerariClick = (itinerari) => {
+    const handleItinerariClick = (itinerari: any) => {
         setItinerariActiu(itinerari.idItinerari);
         agrupaAssignatures(itinerari.assignatures);
     };
+
+    if (!anySeleccionat) {
+        return <div>Carregant...</div>;
+    }
 
     return (
         <div className={styles.container}>
@@ -149,7 +165,6 @@ export default function Home() {
                 </div>
             </div>
             <div className={styles.assignatures}>
-                {/* <h2 className={styles.titolBuit}>Llistat d'assignatures</h2> */}
                 {Object.keys(assignaturesPerCurs).map((curs) => (
                     <div key={curs}>
                         <h3 className={styles.cursSeccio}>{nomsCursos[curs] || curs}</h3>
@@ -159,31 +174,31 @@ export default function Home() {
                                 <ul>
                                     {assignaturesPerCurs[curs][tipus].map((assignatura) => (
                                         <li key={assignatura.idAssignatura} className={styles.assignaturaItem}>
-                                            <a
+                                            <Link
                                                 href={`/${assignatura.idAssignatura}`}
                                                 className={styles.assignaturaLink}
                                             >
                                                 {assignatura.descAssignatura}
-                                            </a>
+                                            </Link>
                                             <div className={styles.semestreButtons}>
                                                 <div style={{ flex: 1, textAlign: "left" }}>
                                                     {assignatura.teOfertaSem1 && (
-                                                        <a
+                                                        <Link
                                                             href={`/${assignatura.idAssignatura}/1`}
                                                             className={styles.semestreButtonSmall}
                                                         >
                                                             1Sem
-                                                        </a>
+                                                        </Link>
                                                     )}
                                                 </div>
                                                 <div style={{ flex: 1, textAlign: "right" }}>
                                                     {assignatura.teOfertaSem2 && (
-                                                        <a
+                                                        <Link
                                                             href={`/${assignatura.idAssignatura}/2`}
                                                             className={styles.semestreButtonSmall}
                                                         >
                                                             2Sem
-                                                        </a>
+                                                        </Link>
                                                     )}
                                                 </div>
                                             </div>
@@ -208,12 +223,4 @@ export default function Home() {
             </footer>
         </div>
     );
-}
-
-export async function getStaticProps() {
-    // No utilitzem cap any específic aquí ja que les dades es carreguen dinàmicament
-    return {
-        props: {},
-        revalidate: 2592000 // Recarreguem la info un cop al mes
-    };
 }

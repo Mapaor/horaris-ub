@@ -1,14 +1,15 @@
-import { useRouter } from "next/router";
+"use client";
+
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import Head from "next/head";
-import styles from "../../styles/PlaDocent.module.css";
-import Header from "../../components/Header";
-import { getAnySeleccionat } from "../../lib/anyAcademic";
+import styles from "../../../styles/PlaDocent.module.css";
+import Header from "../../../components/Header";
+import { getAnySeleccionat } from "../../../lib/anyAcademic";
 
 export default function PlaDocent() {
-    const router = useRouter();
-    const { idAssignatura } = router.query;
-    const [plaDocentData, setPlaDocentData] = useState(null);
+    const params = useParams();
+    const idAssignatura = params.idAssignatura as string;
+    const [plaDocentData, setPlaDocentData] = useState<any>(null);
 
     useEffect(() => {
         if (idAssignatura) {
@@ -38,17 +39,10 @@ export default function PlaDocent() {
         { label: "Pla Docent" }
     ];
 
+    const title = `${dadesGenerals.descripcioAssig} - Pla Docent`;
+
     return (
         <div className={styles.container}>
-            <Head>
-                <title>{dadesGenerals.descripcioAssig} - Pla Docent</title>
-                <meta name="description" content={`Pla Docent de l'assignatura ${dadesGenerals.descripcioAssig}`} />
-                <meta property="og:title" content={`Pla Docent - ${dadesGenerals.descripcioAssig} ~ Horaris Física UB`}/>
-                <meta property="og:description" content={`Versió alternativa a la guia acadèmica pel pla docent de l'assignatura ${dadesGenerals.descripcioAssig}.`} />
-                <meta property="og:image" content="/horaris-ub.jpg" />
-                <meta property="og:url" content={`https://horaris.ub.fisica.cat/${idAssignatura}/pladocent`} />
-                <meta property="og:type" content="website" />
-            </Head>
             <Header breadcrumbs={breadcrumbs} />
             <h1 className={styles.titolPrincipal}>{dadesGenerals.descripcioAssig}</h1>
             <h2 className={styles.titolSeccio}>Informació General</h2>
@@ -69,7 +63,7 @@ export default function PlaDocent() {
 
             <h2 className={styles.titolSeccio}>Competències</h2>
             <ul className={styles.llista}>
-                {definicioPlaDocent.competencies.map((competencia) => (
+                {definicioPlaDocent.competencies.map((competencia: any) => (
                     <li key={competencia.codiCompetencia} className={styles.elementLlista}>
                         {competencia.descripcioCompetencia}
                     </li>
@@ -78,7 +72,7 @@ export default function PlaDocent() {
 
             <h2 className={styles.titolSeccio}>Objectius</h2>
             <ul className={styles.llista}>
-                {definicioPlaDocent.objectius.map((objectiu) => (
+                {definicioPlaDocent.objectius.map((objectiu: any) => (
                     <li key={objectiu.codiObjectiu} className={styles.elementLlista}>
                         <div dangerouslySetInnerHTML={{ __html: objectiu.descripcioObjectiu }} />
                     </li>
@@ -87,12 +81,12 @@ export default function PlaDocent() {
 
             <h2 className={styles.titolSeccio}>Temari</h2>
             <ul className={styles.llista}>
-                {definicioPlaDocent.temari.map((bloc) => (
+                {definicioPlaDocent.temari.map((bloc: any) => (
                     <li key={bloc.codiBloc} className={styles.elementLlista}>
                         <strong className={styles.textDestacat}>{bloc.titol}</strong>
                         {bloc.temes ? (
                             <ul className={styles.llista}>
-                                {bloc.temes.map((tema) => (
+                                {bloc.temes.map((tema: any) => (
                                     <li key={tema.codiTema} className={styles.elementLlista}>
                                         <div dangerouslySetInnerHTML={{ __html: tema.titol }} />
                                     </li>
@@ -118,7 +112,7 @@ export default function PlaDocent() {
             </div>
             <h2 className={styles.titolSeccio}>Bibliografia</h2>
             <ul className={styles.llista}>
-                {definicioPlaDocent.fontsInformacio.map((font) => (
+                {definicioPlaDocent.fontsInformacio.map((font: any) => (
                     <li key={font.codiFont} className={styles.elementLlista}>
                         <div dangerouslySetInnerHTML={{ __html: font.citaLiteral }} />
                         {font.linkCatalegURL1 && (
@@ -131,22 +125,4 @@ export default function PlaDocent() {
             </ul>
         </div>
     );
-}
-
-export async function getStaticPaths() {
-    // No generem paths estàtics ja que dependrà de l'any seleccionat
-    return {
-        paths: [],
-        fallback: "blocking"
-    };
-}
-
-export async function getStaticProps({ params }) {
-    // Retornem props bàsiques, les dades es carregaran dinàmicament
-    return {
-        props: {
-            idAssignatura: params.idAssignatura
-        },
-        revalidate: 2592000 // Recarreguem la info un cop al mes
-    };
 }

@@ -1,6 +1,5 @@
 {
   "name": "horaris-ub",
-  "packageManager": "yarn@4.5.0",
   "version": "1.0.0",
   "description": "Aplicació per obtenir els horaris UB",
   "scripts": {
@@ -11,9 +10,13 @@
   "dependencies": {
     "@fluentui/web-components": "2.6.1",
     "next": "^15.3.8",
-    "node-fetch": "^3.0.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
   },
-  "license": "Unlicense"
+  "license": "Unlicense",
+  "devDependencies": {
+    "@types/node": "^26.5.1",
+    "@types/react": "^19.3.0",
+    "typescript": "^6.0.3"
+  }
 }

@@ -1,14 +1,20 @@
+import Link from 'next/link';
 import styles from "../styles/Header.module.css";
 
-export default function Header({ breadcrumbs }) {
+export type Breadcrumb = {
+    label: string;
+    link?: string;
+};
+
+export default function Header({ breadcrumbs }: { breadcrumbs: Breadcrumb[] }) {
     return (
         <div className={styles.header}>
             {breadcrumbs.map((breadcrumb, index) => (
                 <span key={index}>
                     {breadcrumb.link ? (
-                        <a href={breadcrumb.link} className={styles.breadcrumbLink}>
+                        <Link href={breadcrumb.link} className={styles.breadcrumbLink}>
                             {breadcrumb.label}
-                        </a>
+                        </Link>
                     ) : (
                         <span className={styles.breadcrumb}>{breadcrumb.label}</span>
                     )}
