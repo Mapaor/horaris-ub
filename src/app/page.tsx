@@ -6,9 +6,7 @@ import { getAnySeleccionat, generaAnysAcademics, AnyAcademic } from "../lib/anyA
 import Link from "next/link";
 
 export default function Home() {
-    const [itineraris, setItineraris] = useState<any[]>([]);
     const [assignaturesPerCurs, setAssignaturesPerCurs] = useState<Record<string, Record<string, any[]>>>({});
-    const [itinerariActiu, setItinerariActiu] = useState<string | null>(null);
     const [anySeleccionat, setAnySeleccionat] = useState<number>(0);
     const [dropdownObert, setDropdownObert] = useState(false);
     const [anysAcademics, setAnysAcademics] = useState<AnyAcademic[]>([]);
@@ -35,15 +33,12 @@ export default function Home() {
         fetch(`/api/horaris?slug=getItinerariGrau/TG1035/${nouAny}/CAT`)
             .then((response) => response.json())
             .then((data) => {
-                setItineraris(data.datos);
                 const itinerariPerDefecte = data.datos.find(
                     (itinerari: any) => itinerari.descItinerari === "Menció en Física Fonamental"
                 );
                 if (itinerariPerDefecte) {
-                    setItinerariActiu(itinerariPerDefecte.idItinerari);
                     agrupaAssignatures(itinerariPerDefecte.assignatures);
                 } else if (data.datos.length > 0) {
-                    setItinerariActiu(data.datos[0].idItinerari);
                     agrupaAssignatures(data.datos[0].assignatures);
                 }
             })
@@ -55,15 +50,12 @@ export default function Home() {
         fetch(`/api/horaris?slug=getItinerariGrau/TG1035/${anySeleccionat}/CAT`)
             .then((response) => response.json())
             .then((data) => {
-                setItineraris(data.datos);
                 const itinerariPerDefecte = data.datos.find(
                     (itinerari: any) => itinerari.descItinerari === "Menció en Física Fonamental"
                 );
                 if (itinerariPerDefecte) {
-                    setItinerariActiu(itinerariPerDefecte.idItinerari);
                     agrupaAssignatures(itinerariPerDefecte.assignatures);
                 } else if (data.datos.length > 0) {
-                    setItinerariActiu(data.datos[0].idItinerari);
                     agrupaAssignatures(data.datos[0].assignatures);
                 }
             })
@@ -112,10 +104,7 @@ export default function Home() {
         setAssignaturesPerCurs(agrupades);
     };
 
-    const handleItinerariClick = (itinerari: any) => {
-        setItinerariActiu(itinerari.idItinerari);
-        agrupaAssignatures(itinerari.assignatures);
-    };
+
 
     if (!anySeleccionat) {
         return <div>Carregant...</div>;
@@ -125,17 +114,6 @@ export default function Home() {
         <div className={styles.container}>
             <h1>Horaris Física UB</h1>
             <div className={styles.categories}>
-                {itineraris.map((itinerari) => (
-                    <button
-                        key={itinerari.idItinerari}
-                        className={`${styles.categoryButton} ${
-                            itinerariActiu === itinerari.idItinerari ? styles.activeButton : ""
-                        }`}
-                        onClick={() => handleItinerariClick(itinerari)}
-                    >
-                        {itinerari.descItinerari}
-                    </button>
-                ))}
                 <div className={styles.yearSelectorContainer}>
                     <div 
                         className={`${styles.customSelector} ${dropdownObert ? styles.open : ''}`}
