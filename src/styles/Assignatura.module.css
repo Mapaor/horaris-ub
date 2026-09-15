@@ -24,6 +24,7 @@
 
 .semestreButton:hover {
     background-color: #005a9e;
+    color: white;
 }
 
 .plaDocentButtonContainer {
@@ -44,6 +45,7 @@
 
 .plaDocentButton:hover {
     background-color: #005a9e;
+    color: white;
 }
 
 .plaDocentIframe {

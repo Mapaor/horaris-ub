@@ -1,0 +1,208 @@
+.calendarContainer {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    overflow: hidden;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.calendarHeaderRow {
+    display: flex;
+    border-bottom: 1px solid #e2e8f0;
+    background-color: #f8fafc;
+}
+
+.calendarTimeColumn {
+    width: 60px;
+    flex-shrink: 0;
+    border-right: 1px solid #e2e8f0;
+}
+
+.calendarHeaderCell {
+    flex: 1;
+    text-align: center;
+    padding: 12px 0;
+    font-weight: 600;
+    color: #475569;
+    font-size: 14px;
+    border-right: 1px solid #e2e8f0;
+}
+
+.calendarHeaderCell:last-child {
+    border-right: none;
+}
+
+.calendarBody {
+    display: flex;
+    position: relative;
+    /* 14 hores (08:00 a 21:00 incloses, però cada hora són 60px) -> 13 intervals * 60px = 780px */
+    height: 780px; 
+    overflow-y: auto;
+}
+
+.calendarTimeScale {
+    width: 60px;
+    flex-shrink: 0;
+    border-right: 1px solid #e2e8f0;
+    position: relative;
+    background-color: #f8fafc;
+}
+
+.timeScaleLabel {
+    position: relative;
+    height: 60px; /* 1 hora = 60px */
+    text-align: right;
+    padding-right: 8px;
+    font-size: 12px;
+    color: #64748b;
+    transform: translateY(-8px); /* Centra visualment el text sobre la línia */
+}
+
+.calendarGrid {
+    flex: 1;
+    position: relative;
+    display: flex;
+    background-color: white;
+}
+
+.hourLine {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background-color: #f1f5f9;
+    z-index: 1;
+}
+
+.dayColumn {
+    flex: 1;
+    position: relative;
+    border-right: 1px solid #e2e8f0;
+}
+
+.dayColumn:last-child {
+    border-right: none;
+}
+
+.calendarEvent {
+    position: absolute;
+    z-index: 10;
+    border-radius: 6px;
+    padding: 6px;
+    color: white;
+    font-size: 12px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    overflow: hidden;
+    /* Efecte de trancament */
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    box-sizing: border-box;
+}
+
+.eventTitle {
+    font-weight: 600;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-bottom: 2px;
+}
+
+.eventSubtitle {
+    font-size: 11px;
+    opacity: 0.9;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Hide scrollbar for Horari container */
+.calendarContainer::-webkit-scrollbar {
+    display: none;
+}
+.calendarContainer {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+/* TOOLBAR & FULLSCREEN HORARI */
+.exportToolbar {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+    width: 100%;
+}
+
+.toolbarIconBtn {
+    background: white;
+    border: 1px solid #e2e8f0;
+    color: #475569;
+    border-radius: 8px;
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.toolbarIconBtn:hover {
+    background-color: #f8fafc;
+    color: #0078d4;
+    border-color: #cbd5e1;
+}
+
+.fullscreenOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #f8fafc;
+    z-index: 9999;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    box-sizing: border-box;
+}
+
+.fullscreenCloseBtn {
+    position: absolute;
+    top: 24px;
+    left: 24px;
+    background: white;
+    border: 1px solid #e2e8f0;
+    color: #475569;
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    z-index: 10000;
+}
+
+.fullscreenCloseBtn:hover {
+    background-color: #f1f5f9;
+    color: #ef4444;
+}
+
+.calendarFullscreenMode {
+    flex: 1;
+    height: auto;
+    min-height: 800px;
+    margin-top: 0;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}

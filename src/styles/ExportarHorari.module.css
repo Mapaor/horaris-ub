@@ -1,0 +1,159 @@
+.exportContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    margin-top: 20px;
+}
+
+.configSection {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.configSectionTitle {
+    margin: 0 0 8px 0;
+    font-size: 18px;
+    color: #0f172a;
+}
+
+.configSectionDesc {
+    margin: 0 0 20px 0;
+    font-size: 14px;
+    color: #64748b;
+}
+
+.configList {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.configRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+}
+
+.configRowInfo {
+    flex: 1;
+    padding-right: 16px;
+}
+
+.configRowTitle {
+    font-weight: 500;
+    color: #334155;
+    font-size: 15px;
+}
+
+.configRowControls {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.aliasInput {
+    padding: 8px 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    font-size: 14px;
+    width: 140px;
+    outline: none;
+    transition: all 0.2s;
+}
+
+.aliasInput:focus {
+    border-color: #0078d4;
+    box-shadow: 0 0 0 2px rgba(0, 120, 212, 0.1);
+}
+
+.colorPickerWrapper {
+    position: relative;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    overflow: hidden;
+    cursor: pointer;
+    border: 2px solid #e2e8f0;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.colorPickerWrapper:hover {
+    border-color: #cbd5e1;
+}
+
+.nativeColorInput {
+    opacity: 0;
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    width: 60px;
+    height: 60px;
+    cursor: pointer;
+    z-index: 2;
+}
+
+.colorPickerDisplay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.exportActionContainer {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+}
+
+.exportPrimaryBtn {
+    background-color: #0078d4;
+    color: white;
+    font-weight: 600;
+    padding: 12px 24px;
+    border-radius: 8px;
+    border: none;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.exportPrimaryBtn:hover {
+    background-color: #006abc;
+}
+
+.exportPrimaryBtn:disabled {
+    background-color: #94a3b8;
+    cursor: not-allowed;
+}
+.configRowHidden {
+    opacity: 0.5;
+    background-color: #f1f5f9;
+}
+
+.visibilityToggleBtn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #64748b;
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    transition: all 0.2s;
+}
+
+.visibilityToggleBtn:hover {
+    background-color: #e2e8f0;
+    color: #334155;
+}

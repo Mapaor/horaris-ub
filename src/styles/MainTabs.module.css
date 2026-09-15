@@ -1,0 +1,75 @@
+.categories {
+    display: flex;
+    justify-content: center;
+    align-items: stretch; /* Fa que tots els elements tinguin la mateixa alçada */
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: nowrap;
+    width: 100%;
+    max-width: 1200px; /* Amplada màxima fixa */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.segmentControl {
+    display: flex;
+    background-color: #f1f5f9;
+    border-radius: 9999px;
+    padding: 6px;
+    gap: 4px;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.04);
+    border: 1px solid #e2e8f0;
+}
+
+.segmentButton {
+    padding: 10px 24px;
+    font-size: 15px;
+    background-color: transparent;
+    color: #64748b;
+    border: none;
+    border-radius: 9999px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1.3;
+    min-height: 44px;
+}
+
+.segmentButton:hover:not(.activeSegment) {
+    color: #334155;
+    background-color: rgba(226, 232, 240, 0.6);
+}
+
+.activeSegment {
+    background-color: #0078d4;
+    color: white;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+    font-weight: 500;
+}
+
+@media (max-width: 768px) {
+    .categories {
+        flex-direction: column; /* Canvia a una disposició vertical */
+        gap: 8px; /* Redueix l'espai entre elements */
+        align-items: stretch; /* Manteniu l'estirament en versió mòbil */
+    }
+
+    .segmentControl {
+        flex-direction: column;
+        width: 100%;
+        max-width: 300px;
+        margin: 0 auto;
+        border-radius: 16px;
+    }
+    
+    .segmentButton {
+        width: 100%;
+        font-size: 14px;
+        padding: 8px 15px;
+        min-height: 40px;
+        border-radius: 10px;
+    }
+}

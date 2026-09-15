@@ -1,0 +1,285 @@
+.cronosContainer {
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.searchSection {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    width: 100%;
+    max-width: 1000px;
+    margin: 20px auto;
+}
+
+.smallSegmentControl {
+    display: flex;
+    background-color: #f1f5f9;
+    border-radius: 8px;
+    padding: 4px;
+    gap: 2px;
+    border: 1px solid #e2e8f0;
+    flex-shrink: 0;
+}
+
+.smallSegmentButton {
+    padding: 8px 12px;
+    font-size: 13px;
+    background-color: transparent;
+    color: #64748b;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-weight: 500;
+}
+
+.smallSegmentButton:hover:not(.activeSmallSegment) {
+    color: #334155;
+    background-color: rgba(226, 232, 240, 0.6);
+}
+
+.activeSmallSegment {
+    background-color: white;
+    color: #0078d4;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.searchContainer {
+    position: relative;
+    flex: 1;
+    max-width: none;
+}
+
+.searchInput {
+    width: 100%;
+    padding: 12px 20px;
+    font-size: 16px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    outline: none;
+    transition: all 0.2s ease;
+    box-sizing: border-box;
+}
+
+.searchInput:focus {
+    border-color: #0078d4;
+    box-shadow: 0 0 0 3px rgba(0, 120, 212, 0.2);
+}
+
+.searchResults {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    margin-top: 4px;
+    z-index: 1000;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.searchResultItem {
+    padding: 12px 16px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.searchResultItem:last-child {
+    border-bottom: none;
+}
+
+.searchResultItem:hover {
+    background-color: #f8fafc;
+    color: #0078d4;
+}
+
+.selectedAssignaturesContainer {
+    margin-top: 40px;
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.selectedList {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.selectedItem {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.selectedItemHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 16px;
+}
+
+.selectedItemName {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.removeButton {
+    background: transparent;
+    border: none;
+    color: #94a3b8;
+    font-size: 18px;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.removeButton:hover {
+    color: #ef4444;
+}
+
+.selectedItemActions {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    border-top: 1px solid #f1f5f9;
+    padding-top: 16px;
+}
+
+.horariLinkBtn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 16px;
+    background-color: #0078d4;
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+
+.horariLinkBtn:hover {
+    background-color: #005a9e;
+    color: white;
+}
+
+.groupSelectorContainer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 16px;
+}
+
+.activityGroupBlock {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.activityGroupLabel {
+    font-size: 13px;
+    color: #64748b;
+    font-weight: 500;
+}
+
+.groupSegmentControl {
+    display: flex;
+    background-color: #f1f5f9;
+    border-radius: 8px;
+    padding: 4px;
+    gap: 4px;
+    border: 1px solid #e2e8f0;
+}
+
+.groupSegmentButton {
+    padding: 6px 12px;
+    font-size: 13px;
+    background-color: transparent;
+    color: #64748b;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-weight: 500;
+}
+
+.groupSegmentButton:hover:not(.activeGroupSegment) {
+    color: #334155;
+    background-color: rgba(226, 232, 240, 0.6);
+}
+
+.activeGroupSegment {
+    background-color: #0078d4;
+    color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    font-weight: 500;
+}
+
+/* CRONOS MODE SELECTOR */
+.cronosModeSelectorWrapper {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.cronosModeSegmentControl {
+    display: flex;
+    width: 100%;
+    background-color: #f1f5f9;
+    border-radius: 10px;
+    padding: 6px;
+    gap: 4px;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.04);
+    border: 1px solid #e2e8f0;
+}
+
+.cronosModeSegmentButton {
+    flex: 1;
+    padding: 10px 24px;
+    font-size: 15px;
+    background-color: transparent;
+    color: #64748b;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1.3;
+    min-height: 44px;
+}
+
+.cronosModeSegmentButton:hover:not(.activeCronosModeSegment) {
+    color: #334155;
+    background-color: rgba(226, 232, 240, 0.6);
+}
+
+.activeCronosModeSegment {
+    background-color: #0078d4;
+    color: white;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+    font-weight: 500;
+}

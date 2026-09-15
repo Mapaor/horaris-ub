@@ -1,0 +1,144 @@
+.assignatures {
+    text-align: center;
+}
+
+.assignatures ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.searchSection {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    width: 100%;
+    margin: 40px auto 0px auto;
+}
+
+.searchContainer {
+    position: relative;
+    flex: 1;
+    max-width: none;
+}
+
+.searchInput {
+    width: 100%;
+    padding: 12px 20px;
+    font-size: 16px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    outline: none;
+    transition: all 0.2s ease;
+    box-sizing: border-box;
+}
+
+.searchInput:focus {
+    border-color: #0078d4;
+    box-shadow: 0 0 0 3px rgba(0, 120, 212, 0.2);
+}
+
+.assignaturaItem {
+    display: flex; /* Utilitzem flexbox per una estructura més rígida */
+    justify-content: space-between; /* Espai entre el nom i els botons */
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+    padding: 5px 0; /* Espai intern per evitar que el contingut estigui massa a prop */
+    border-bottom: 1px solid #ddd; /* Opcional: línia per separar les assignatures */
+    padding-bottom: 10px;
+}
+
+.assignaturaLink {
+    flex: 2; /* El nom de l'assignatura ocupa més espai */
+    text-decoration: none;
+    color: #0078d4;
+    font-weight: bold;
+    text-align: left; /* Alinea el text a l'esquerra */
+    transition: color 0.3s;
+}
+
+.assignaturaLink:hover {
+    color: #005a9e;
+}
+
+.semestreButtons {
+    display: flex;
+    gap: 0; /* Elimina l'espai entre les columnes */
+    width: 125px; /* Amplada fixa per assegurar que les columnes ocupin només l'espai necessari */
+}
+
+.semestreButtonSmall {
+    flex: 1; /* Cada botó ocupa una columna fixa */
+    padding: 5px 10px;
+    font-size: 14px;
+    background-color: #0078d4;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    text-align: center;
+    white-space: nowrap; /* Evita que el text es trenqui en múltiples línies */
+}
+
+.semestreButtonSmall:hover {
+    background-color: #005a9e;
+    color: white;
+}
+
+.cursSeccio {
+    margin-top: 60px;
+    font-size: 24px; /* Augmenta la mida del text */
+    font-weight: bold; /* Fa el text més gruixut */
+    color: #0078d4; /* Aplica un color blau destacable */
+    text-align: center; /* Centra el text */
+    padding-bottom: 10px; /* Espai entre el text i la línia */
+}
+
+@media (max-width: 768px) {
+    .assignaturaItem {
+        flex-direction: column; /* Canvia a una disposició vertical */
+        align-items: flex-start; /* Alinea els elements a l'esquerra */
+        gap: 5px; /* Redueix l'espai entre elements */
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+
+    .semestreButtons {
+        display: flex;
+        justify-content: flex-start; /* Alinea els botons al principi */
+        gap: 5px; /* Espai entre els botons */
+        width: 100%; /* Amplada completa per evitar solapaments */
+    }
+
+    .semestreButtonSmall {
+        flex: 0; /* Els botons ocupen només l'espai necessari */
+        padding: 3px 8px; /* Reduïm el padding per fer-los més petits */
+        font-size: 12px; /* Reduïm la mida del text */
+        background-color: #0078d4;
+        color: white;
+        border: none;
+        border-radius: 3px;
+        text-decoration: none;
+        cursor: pointer;
+        text-align: center;
+        white-space: nowrap; /* Evitem que el text es trenqui */
+    }
+
+    .semestreButtonSmall:last-child {
+        margin-left: 0; /* Elimina el marge automàtic per evitar que es desplaci a la dreta */
+    }
+
+    .semestreButtonSmall:hover {
+        background-color: #005a9e;
+        color: white;
+    }
+
+    .assignatures ul {
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+}
