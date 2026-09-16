@@ -52,25 +52,25 @@
 
 @media (max-width: 768px) {
     .categories {
-        flex-direction: column; /* Canvia a una disposició vertical */
-        gap: 8px; /* Redueix l'espai entre elements */
-        align-items: stretch; /* Manteniu l'estirament en versió mòbil */
+        flex-direction: column;
+        gap: 8px;
+        align-items: stretch;
     }
 
     .segmentControl {
-        flex-direction: column;
+        flex-direction: row;
         width: 100%;
-        max-width: 300px;
+        max-width: 320px;
         margin: 0 auto;
-        border-radius: 16px;
+        border-radius: 9999px;
     }
     
     .segmentButton {
-        width: 100%;
+        flex: 1;
         font-size: 14px;
-        padding: 8px 15px;
+        padding: 8px 4px;
         min-height: 40px;
-        border-radius: 10px;
+        border-radius: 9999px;
     }
 }
 
