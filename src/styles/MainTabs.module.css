@@ -60,7 +60,7 @@
     .segmentControl {
         flex-direction: row;
         width: 100%;
-        max-width: 320px;
+        max-width: 300px;
         margin: 0 auto;
         border-radius: 9999px;
     }
