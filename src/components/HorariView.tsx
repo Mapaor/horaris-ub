@@ -169,7 +169,7 @@ export function HorariView({
             return;
         }
 
-        const target = isFullscreen ? fullscreenRef.current : horariRef.current;
+        const target = horariRef.current;
         if (!target) return;
         
         try {
@@ -269,7 +269,8 @@ export function HorariView({
                 </button>
             </div>
             
-            <div className={`${styles.calendarContainer} ${isFullscreen ? styles.calendarFullscreenMode : ''}`} ref={horariRef}>
+            <div className={`${styles.calendarContainer} ${isFullscreen ? styles.calendarFullscreenMode : ''}`}>
+            <div className={styles.calendarScrollArea} ref={horariRef}>
             <div className={styles.calendarHeaderRow}>
                 <div className={styles.calendarTimeColumn}></div>
                 {DAYS.map(day => (
@@ -333,6 +334,7 @@ export function HorariView({
                         );
                     })}
                 </div>
+            </div>
             </div>
         </div>
         </div>
