@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import styles from "../styles/PaginaPrincipal.module.css";
-import { getAnySeleccionat, generaAnysAcademics, AnyAcademic } from "../lib/anyAcademic";
+import { getAnySeleccionat, generaAnysAcademics, AnyAcademic, getAnyAcademicPerDefecte } from "../lib/anyAcademic";
 
 // Hooks
 import { useAssignaturesData } from "../hooks/useAssignaturesData";
@@ -13,6 +13,7 @@ import { MainTabs } from "../components/MainTabs";
 import { YearSelector } from "../components/YearSelector";
 import { GuiaAcademica } from "../components/GuiaAcademica";
 import { CronosTab } from "../components/CronosTab";
+import { PlanificacioTab } from "../components/PlanificacioTab";
 
 export default function Home() {
     const [anySeleccionat, setAnySeleccionat] = useState<number>(0);
@@ -39,11 +40,14 @@ export default function Home() {
         Altres: "Altres"
     };
 
-    const { assignaturesPerCurs, allAssignatures } = useAssignaturesData(anySeleccionat);
+    const { assignaturesPerCurs, allAssignatures: allAssignaturesGuia } = useAssignaturesData(anySeleccionat);
     
-    const cronosState = useCronos(anySeleccionat);
+    // Always use the most recent academic year for Cronos and Planificació
+    const anyRecent = getAnyAcademicPerDefecte();
+    const { allAssignatures: allAssignaturesRecent } = useAssignaturesData(anyRecent);
+    const cronosState = useCronos(anyRecent);
 
-    const cronosFilteredAssignatures = allAssignatures.filter(a => {
+    const cronosFilteredAssignatures = allAssignaturesRecent.filter(a => {
         if (!cronosState.cronosSearchQuery) return false;
         
         const queryNormalized = cronosState.cronosSearchQuery.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
@@ -93,9 +97,7 @@ export default function Home() {
             )}
 
             {pestanyaActiva === "planificacio" && (
-                <div className={styles.blankState}>
-                    {/* En desenvolupament */}
-                </div>
+                <PlanificacioTab allAssignatures={allAssignaturesRecent} />
             )}
 
             <footer className={styles.footer}>

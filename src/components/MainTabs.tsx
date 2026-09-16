@@ -22,12 +22,12 @@ export function MainTabs({ pestanyaActiva, setPestanyaActiva }: MainTabsProps) {
                 >
                     Cronos
                 </button>
-                {/* <button
-                    className={`${styles.segmentButton} ${pestanyaActiva === "planificacio" ? styles.activeSegment : ""}`}
+                <button
+                    className={`${styles.segmentButton} ${pestanyaActiva === "planificacio" ? styles.activeSegment : ""} ${styles.desktopOnly}`}
                     onClick={() => setPestanyaActiva("planificacio")}
                 >
                     Planificació
-                </button> */}
+                </button>
             </div>
         </div>
     );

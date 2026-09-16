@@ -1,0 +1,152 @@
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    backdrop-filter: blur(4px);
+}
+
+.modalContent {
+    background-color: #ffffff;
+    border-radius: 12px;
+    width: 95%;
+    max-width: 1100px;
+    max-height: 90vh;
+    padding: 24px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.closeButton {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #666;
+    transition: color 0.2s;
+}
+
+.closeButton:hover {
+    color: #000;
+}
+
+.modalTitle {
+    margin-top: 0;
+    margin-bottom: 24px;
+    color: #333;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.calendarScroll {
+    overflow-y: auto;
+    padding-right: 8px;
+    flex: 1;
+}
+
+.monthContainer {
+    margin-bottom: 32px;
+}
+
+.monthTitle {
+    font-size: 1.25rem;
+    color: #0078d4;
+    margin-bottom: 16px;
+    border-bottom: 2px solid #e2e8f0;
+    padding-bottom: 8px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr) 0.7fr 0.7fr;
+    gap: 8px;
+}
+
+.dayHeader {
+    text-align: center;
+    font-weight: 600;
+    color: #64748b;
+    padding: 8px;
+    font-size: 0.9rem;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.cell, .emptyCell {
+    min-height: 80px;
+    min-width: 0;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    background-color: #f8fafc;
+}
+
+.emptyCell {
+    background-color: transparent;
+    border-color: transparent;
+}
+
+.cell.hasExam {
+    background-color: #f0f9ff;
+    border-color: #bae6fd;
+}
+
+.dayNumber {
+    font-weight: 600;
+    color: #475569;
+    font-size: 0.9rem;
+    margin-bottom: 4px;
+}
+
+.hasExam .dayNumber {
+    color: #0369a1;
+}
+
+.examList {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+}
+
+.examBadge {
+    background-color: #0ea5e9;
+    color: white;
+    font-size: 0.7rem;
+    padding: 4px 6px;
+    border-radius: 4px;
+    font-weight: 500;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    max-width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.examName {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex: 1 1 auto;
+}
+
+.examTime {
+    white-space: nowrap;
+    flex: 0 0 auto;
+}
