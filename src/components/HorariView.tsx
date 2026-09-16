@@ -19,6 +19,7 @@ interface HorariViewProps {
         showClassrooms?: boolean;
     };
     cronosSemestre: "1" | "2";
+    importCronosState?: (data: any) => Promise<void>;
 }
 
 const FullscreenIcon = () => (
@@ -30,6 +31,12 @@ const FullscreenIcon = () => (
 const DownloadIcon = () => (
     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
         <path fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 3V14M8 10L12 14L16 10M4 18V19C4 20.1046 4.89543 21 6 21H18C19.1046 21 20 20.1046 20 19V18"/>
+    </svg>
+);
+
+const UploadIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+        <path fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 14V3M8 7L12 3L16 7M4 18V19C4 20.1046 4.89543 21 6 21H18C19.1046 21 20 20.1046 20 19V18"/>
     </svg>
 );
 
@@ -62,12 +69,14 @@ export function HorariView({
     cronosSelectedGroups,
     cronosAssignaturaData,
     cronosConfig,
-    cronosSemestre
+    cronosSemestre,
+    importCronosState
 }: HorariViewProps) {
     const [isFullscreen, setIsFullscreen] = useState(false);
     const [exportFormat, setExportFormat] = useState<"JPG" | "PDF" | "JSON">("JPG");
     const horariRef = useRef<HTMLDivElement>(null);
     const fullscreenRef = useRef<HTMLDivElement>(null);
+    const fileInputRef = useRef<HTMLInputElement>(null);
 
     const events = useMemo(() => {
         const rawEvents: CalendarEvent[] = [];
@@ -130,33 +139,17 @@ export function HorariView({
         return calculateLayout(rawEvents);
     }, [cronosSelectedAssignatures, cronosSelectedGroups, cronosAssignaturaData]);
 
-    if (cronosSelectedAssignatures.length === 0) {
-        return (
-            <div className={globalStyles.blankState} style={{ minHeight: '200px' }}>
-                Selecciona assignatures per veure el teu horari.
-            </div>
-        );
-    }
-
     const handleDownload = async () => {
         if (exportFormat === "JSON") {
-            const classesForJSON = events.map(ev => ({
-                assignatura: ev.descAssignatura, // Si té alias, ja està resolt a l'event (però seria millor tenir l'original també, per ara passem aquest que és el que l'usuari vol veure)
-                assignaturaAlias: cronosConfig?.subjectAliases?.[ev.idAssignatura] || "",
-                activitat: ev.descTipusActivitat, // Alias
-                activitatAlias: cronosConfig?.activityAliases?.[ev.descTipusActivitat] || "",
-                aula: ev.classroomStr || "",
-                grup: ev.siglesGrup,
-                dia: DAYS[ev.dayIndex],
-                horaInici: `${Math.floor(ev.startMinute / 60).toString().padStart(2, '0')}:${(ev.startMinute % 60).toString().padStart(2, '0')}`,
-                horaFi: `${Math.floor(ev.endMinute / 60).toString().padStart(2, '0')}:${(ev.endMinute % 60).toString().padStart(2, '0')}`,
-                color: ev.color,
-                hidden: false
-            }));
-            
             const jsonData = {
+                version: "1.0",
                 semestre: cronosSemestre,
-                classes: classesForJSON
+                assignatures: cronosSelectedAssignatures.map(a => ({
+                    idAssignatura: a.idAssignatura,
+                    descAssignatura: a.descAssignatura
+                })),
+                grups: cronosSelectedGroups,
+                config: cronosConfig
             };
             
             const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(jsonData, null, 2));
@@ -216,6 +209,37 @@ export function HorariView({
             console.error("Error exportant l'horari:", error);
         }
     };
+
+    const handleImportClick = () => {
+        fileInputRef.current?.click();
+    };
+
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        if (file.type !== "application/json" && !file.name.endsWith(".json")) {
+            alert("Si us plau, selecciona un fitxer JSON vàlid.");
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = (evt) => {
+            try {
+                const data = JSON.parse(evt.target?.result as string);
+                if (importCronosState) {
+                    importCronosState(data);
+                }
+            } catch (err) {
+                console.error("Error al analitzar el JSON:", err);
+                alert("El fitxer no té un format JSON vàlid.");
+            }
+        };
+        reader.readAsText(file);
+        
+        // Reset the input so the same file can be selected again if needed
+        e.target.value = '';
+    };
     const isCustom = cronosConfig?.timeSlotStyle === "custom";
 
     return (
@@ -231,10 +255,29 @@ export function HorariView({
                 </button>
             )}
             <div className={styles.exportToolbar} data-html2canvas-ignore="true">
+                {!isFullscreen && (
+                    <div style={{ display: 'flex', marginRight: 'auto' }}>
+                        <input 
+                            type="file" 
+                            accept=".json" 
+                            ref={fileInputRef} 
+                            style={{ display: 'none' }} 
+                            onChange={handleFileChange} 
+                        />
+                        <button 
+                            className={styles.toolbarIconBtn} 
+                            onClick={handleImportClick}
+                            title="Importar JSON"
+                        >
+                            <UploadIcon />
+                        </button>
+                    </div>
+                )}
                 <button 
                     className={styles.toolbarIconBtn} 
                     onClick={() => setIsFullscreen(!isFullscreen)}
                     title="Pantalla completa"
+                    disabled={cronosSelectedAssignatures.length === 0}
                 >
                     <FullscreenIcon />
                 </button>
@@ -243,18 +286,21 @@ export function HorariView({
                     <button
                         className={`${cronosStyles.smallSegmentButton} ${exportFormat === "JPG" ? cronosStyles.activeSmallSegment : ""}`}
                         onClick={() => setExportFormat("JPG")}
+                        disabled={cronosSelectedAssignatures.length === 0}
                     >
                         JPG
                     </button>
                     <button
                         className={`${cronosStyles.smallSegmentButton} ${exportFormat === "PDF" ? cronosStyles.activeSmallSegment : ""}`}
                         onClick={() => setExportFormat("PDF")}
+                        disabled={cronosSelectedAssignatures.length === 0}
                     >
                         PDF
                     </button>
                     <button
                         className={`${cronosStyles.smallSegmentButton} ${exportFormat === "JSON" ? cronosStyles.activeSmallSegment : ""}`}
                         onClick={() => setExportFormat("JSON")}
+                        disabled={cronosSelectedAssignatures.length === 0}
                     >
                         JSON
                     </button>
@@ -264,11 +310,17 @@ export function HorariView({
                     className={styles.toolbarIconBtn} 
                     onClick={handleDownload}
                     title={`Descarregar en ${exportFormat}`}
+                    disabled={cronosSelectedAssignatures.length === 0}
                 >
                     <DownloadIcon />
                 </button>
             </div>
             
+            {cronosSelectedAssignatures.length === 0 ? (
+                <div className={globalStyles.blankState} style={{ minHeight: '200px', marginTop: '20px' }}>
+                    Selecciona assignatures per veure el teu horari o importa un fitxer JSON.
+                </div>
+            ) : (
             <div className={`${styles.calendarContainer} ${isFullscreen ? styles.calendarFullscreenMode : ''}`}>
             <div className={styles.calendarScrollArea} ref={horariRef}>
             <div className={styles.calendarHeaderRow}>
@@ -337,6 +389,7 @@ export function HorariView({
             </div>
             </div>
         </div>
+        )}
         </div>
     );
 }

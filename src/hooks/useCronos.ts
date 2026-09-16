@@ -190,6 +190,63 @@ export function useCronos(anySeleccionat: number) {
         }));
     };
 
+    const importCronosState = async (data: any) => {
+        if (!data || data.version !== "1.0" || !data.semestre || !data.assignatures || !data.grups || !data.config) {
+            alert("Fitxer JSON invàlid o de versió incorrecta.");
+            return;
+        }
+
+        const sem = data.semestre as "1" | "2";
+        setCronosSemestre(sem);
+        
+        setCronosSelectedAssignatures(prev => ({ ...prev, [sem]: data.assignatures }));
+        setCronosSelectedGroups(prev => ({ ...prev, [sem]: data.grups }));
+        setCronosConfig(prev => ({ ...prev, [sem]: data.config }));
+
+        try {
+            const promeses = data.assignatures.map(async (assignatura: any) => {
+                if (!cronosAssignaturaGroups[sem][assignatura.idAssignatura]) {
+                    const res = await fetch(`/api/horaris?slug=getPlanificacioAssignatura/${assignatura.idAssignatura}/TG1035/${anySeleccionat}/${sem}/CAT`);
+                    const result = await res.json();
+                    return { id: assignatura.idAssignatura, payload: result.datos?.assignatura || {} };
+                }
+                return null;
+            });
+            
+            const resultats = await Promise.all(promeses);
+            const nousPayloads: any = {};
+            const nousGroups: any = {};
+            
+            resultats.forEach(res => {
+                if (res) {
+                    nousPayloads[res.id] = res.payload;
+                    const groupedByActivity: Record<string, string[]> = {};
+                    (res.payload.activitats || []).forEach((act: any) => {
+                        if (act.descTipusActivitat && act.descTipusActivitat !== "Exàmens") {
+                            const uniqueGroups = new Set<string>();
+                            act.grups?.forEach((grup: any) => {
+                                if (grup.sigles) uniqueGroups.add(grup.sigles);
+                            });
+                            const groupsArray = Array.from(uniqueGroups).sort();
+                            if (groupsArray.length > 0) {
+                                groupedByActivity[act.descTipusActivitat] = groupsArray;
+                            }
+                        }
+                    });
+                    nousGroups[res.id] = groupedByActivity;
+                }
+            });
+
+            if (Object.keys(nousPayloads).length > 0) {
+                setCronosAssignaturaData(prev => ({ ...prev, [sem]: { ...prev[sem], ...nousPayloads } }));
+                setCronosAssignaturaGroups(prev => ({ ...prev, [sem]: { ...prev[sem], ...nousGroups } }));
+            }
+        } catch (error) {
+            console.error("Error fetching imported data", error);
+            alert("S'ha produït un error al carregar les dades de les assignatures importades.");
+        }
+    };
+
     // Helper per obtenir les dades només del semestre actiu
     const activeSelectedAssignatures = cronosSelectedAssignatures[cronosSemestre];
     const activeSelectedGroups = cronosSelectedGroups[cronosSemestre];
@@ -216,6 +273,7 @@ export function useCronos(anySeleccionat: number) {
         updateActivityAlias,
         toggleActivityVisibility,
         updateTimeSlotStyle,
-        toggleShowClassrooms
+        toggleShowClassrooms,
+        importCronosState
     };
 }

@@ -36,9 +36,14 @@
     font-weight: 500;
 }
 
-.smallSegmentButton:hover:not(.activeSmallSegment) {
+.smallSegmentButton:hover:not(.activeSmallSegment):not(:disabled) {
     color: #334155;
     background-color: rgba(226, 232, 240, 0.6);
+}
+
+.smallSegmentButton:disabled {
+    opacity: 0.5;
+    cursor: default;
 }
 
 .activeSmallSegment {

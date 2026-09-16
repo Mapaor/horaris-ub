@@ -34,6 +34,7 @@ interface CronosTabProps {
     toggleActivityVisibility: (activitatDesc: string) => void;
     updateTimeSlotStyle: (style: "standard" | "custom") => void;
     toggleShowClassrooms: () => void;
+    importCronosState: (data: any) => Promise<void>;
 }
 
 export function CronosTab({
@@ -47,7 +48,7 @@ export function CronosTab({
     updateSelectedGroup, updateSubjectColor,
     updateSubjectAlias, updateActivityAlias,
     toggleActivityVisibility, updateTimeSlotStyle,
-    toggleShowClassrooms
+    toggleShowClassrooms, importCronosState
 }: CronosTabProps) {
     return (
         <div className={styles.cronosContainer}>
@@ -211,6 +212,7 @@ export function CronosTab({
                         cronosAssignaturaData={cronosAssignaturaData}
                         cronosConfig={cronosConfig}
                         cronosSemestre={cronosSemestre}
+                        importCronosState={importCronosState}
                     />
                 </div>
             )}
