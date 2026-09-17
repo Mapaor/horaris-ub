@@ -8,11 +8,13 @@ interface CalendarModalProps {
 }
 
 export function CalendarModal({ semestre, subjects, onClose }: CalendarModalProps) {
-    const examens: { date: Date, subjectName: string, id: string, timeStr?: string }[] = [];
+    const examens: { date: Date, subjectName: string, id: string, timeStr?: string, isRecup: boolean }[] = [];
     
     subjects.forEach(subj => {
-        if (subj.finalDates && subj.finalDates.length > 0) {
-            subj.finalDates.forEach((dStr: string) => {
+        const datesToUse = subj.activeExam === 'R' ? subj.recupDates : subj.finalDates;
+        const isRecup = subj.activeExam === 'R';
+        if (datesToUse && datesToUse.length > 0) {
+            datesToUse.forEach((dStr: string) => {
                 const spaceIdx = dStr.indexOf(' ');
                 let rawDate = dStr;
                 let timeStr = "";
@@ -31,7 +33,8 @@ export function CalendarModal({ semestre, subjects, onClose }: CalendarModalProp
                         date: new Date(year, month, day),
                         subjectName: subj.descAssignatura,
                         id: subj.idAssignatura,
-                        timeStr
+                        timeStr,
+                        isRecup
                     });
                 }
             });
@@ -114,7 +117,7 @@ export function CalendarModal({ semestre, subjects, onClose }: CalendarModalProp
                                                 <span className={styles.dayNumber}>{day}</span>
                                                 <div className={styles.examList}>
                                                     {dayExams.map((ex, idx) => (
-                                                        <div key={idx} className={styles.examBadge} title={`${ex.subjectName} ${ex.timeStr ? ex.timeStr : ''}`}>
+                                                        <div key={idx} className={`${styles.examBadge} ${ex.isRecup ? styles.examBadgeRecup : ''}`} title={`${ex.subjectName} ${ex.timeStr ? ex.timeStr : ''}`}>
                                                             <span className={styles.examName}>{ex.subjectName}</span>
                                                             {ex.timeStr && <span className={styles.examTime}>{ex.timeStr}</span>}
                                                         </div>

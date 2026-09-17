@@ -139,6 +139,10 @@
     gap: 4px;
 }
 
+.examBadgeRecup {
+    background-color: #f97316;
+}
+
 .examName {
     white-space: nowrap;
     overflow: hidden;
