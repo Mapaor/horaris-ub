@@ -82,3 +82,41 @@
     background-color: #0078d4;
     border-radius: 2px;
 }
+
+.selectorItem {
+    position: relative;
+    cursor: pointer;
+    font-size: 0.8rem;
+    color: #aaa;
+    font-weight: 400;
+    transition: color 0.2s;
+    text-decoration: none;
+}
+
+.selectorItem::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 1.5px;
+    bottom: -1px;
+    left: 0;
+    background-color: currentColor;
+    /* transition: width 0.2s ease-in-out; */
+}
+
+.selectorItem:hover {
+    color: #888;
+}
+
+.selectorItem:hover::after {
+    width: 100%;
+}
+
+.selectorItemActive {
+    color: #555;
+    font-weight: 600;
+}
+
+.selectorItemActive::after {
+    width: 100%;
+}
