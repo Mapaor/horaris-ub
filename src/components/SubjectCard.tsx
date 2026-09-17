@@ -16,6 +16,7 @@ export const SubjectCard = ({
     toggleSubjectExam
 }: any) => {
     const [activeGroupIdx, setActiveGroupIdx] = useState(0);
+    const [activePractiquesIdx, setActivePractiquesIdx] = useState(0);
 
     return (
         <div 
@@ -120,6 +121,32 @@ export const SubjectCard = ({
                         {subject.teoriaInfo[activeGroupIdx] && subject.teoriaInfo[activeGroupIdx].horari && (
                             <div style={{ fontSize: '0.8rem', color: '#555' }}>
                                 : {subject.teoriaInfo[activeGroupIdx].horari} <span style={{color: '#888'}}>({subject.teoriaInfo[activeGroupIdx].profs})</span>
+                            </div>
+                        )}
+                    </div>
+                )}
+                {subject.practiquesInfo && subject.practiquesInfo.length > 0 && (
+                    <div style={{ display: 'flex', alignItems: 'baseline', flexWrap: 'wrap', marginTop: '2px' }}>
+                        <div style={{ display: 'flex', gap: '6px' }}>
+                            {subject.practiquesInfo.map((grup: any, idx: number) => (
+                                <span 
+                                    key={idx}
+                                    onClick={() => setActivePractiquesIdx(idx)}
+                                    style={{ 
+                                        cursor: 'pointer', 
+                                        fontWeight: activePractiquesIdx === idx ? 600 : 400,
+                                        textDecoration: activePractiquesIdx === idx ? 'underline' : 'none',
+                                        color: '#555',
+                                        fontSize: '0.8rem'
+                                    }}
+                                >
+                                    {grup.sigles || grup}
+                                </span>
+                            ))}
+                        </div>
+                        {subject.practiquesInfo[activePractiquesIdx] && subject.practiquesInfo[activePractiquesIdx].horari && (
+                            <div style={{ fontSize: '0.8rem', color: '#555' }}>
+                                : {subject.practiquesInfo[activePractiquesIdx].horari} <span style={{color: '#888'}}>({subject.practiquesInfo[activePractiquesIdx].profs})</span>
                             </div>
                         )}
                     </div>

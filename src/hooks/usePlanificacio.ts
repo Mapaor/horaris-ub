@@ -75,10 +75,37 @@ export const usePlanificacio = (allAssignatures: any[]) => {
                     return { sigles: grup.sigles, horari, profs };
                 });
             }
+
+            // Pràctiques
+            const practiquesAct = activitats.find((act: any) => 
+                act.descTipusActivitat === "Pràctiques de laboratori" || 
+                act.descTipusActivitat === "Pràctiques amb tecnologia o entorns tecnològics" ||
+                act.descTipusActivitat === "Altres pràctiques"
+            );
+            let practiquesInfo: any[] = [];
+            if (practiquesAct && practiquesAct.grups) {
+                practiquesInfo = practiquesAct.grups.map((grup: any) => {
+                    const profs = grup.professors.map((p: any) => {
+                        const name = p.nomComplet;
+                        if (!name) return "";
+                        if (name.includes(',')) {
+                            const parts = name.split(',');
+                            const cognoms = parts[0].trim().split(' ');
+                            const nom = parts[1].trim().split(' ')[0];
+                            return `${nom} ${cognoms[0]}`;
+                        }
+                        const parts = name.split(' ');
+                        if (parts.length >= 2) return `${parts[0]} ${parts[1]}`;
+                        return name;
+                    }).filter(Boolean).join(', ') || "Sense professor";
+                    const horari = formatHorariInline(grup.horaris);
+                    return { sigles: grup.sigles, horari, profs };
+                });
+            }
             
-            return { examFinal, examRecup, finalDates, recupDates, teoriaInfo };
+            return { examFinal, examRecup, finalDates, recupDates, teoriaInfo, practiquesInfo };
         } catch (e) {
-            return { examFinal: "Error al carregar exàmens", examRecup: "", finalDates: [], recupDates: [], teoriaInfo: [] };
+            return { examFinal: "Error al carregar exàmens", examRecup: "", finalDates: [], recupDates: [], teoriaInfo: [], practiquesInfo: [] };
         }
     };
 
@@ -93,6 +120,7 @@ export const usePlanificacio = (allAssignatures: any[]) => {
             finalDates: [],
             recupDates: [],
             teoriaInfo: ["Carregant horaris..."],
+            practiquesInfo: [],
             activeExam: 'F'
         };
         
@@ -158,6 +186,7 @@ export const usePlanificacio = (allAssignatures: any[]) => {
                 subj.finalDates = [];
                 subj.recupDates = [];
                 subj.teoriaInfo = ["Carregant horaris..."];
+                subj.practiquesInfo = [];
             }
 
             if (targetId) {
