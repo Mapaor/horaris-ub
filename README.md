@@ -11,7 +11,7 @@ S'utilitzen tres endpoints de l'API oficial de la UB diferents. Un per obtenir i
 
 Nota per si a algú li interessa: La API de la UB, així com moltes altres APIs (per exemple la de Rodalies) són públiques en el sentit que són públicament accessibles, però no estan documentades com ho estarien la majoria d'APIs d'aplicacions d'empreses de software. Aleshores la manera típica per trobar aquests endpoints és trobar una web que els utilitzi (la guia acadèmica oficial en aquest cas) i simplement obrir la consola de l'inspector del navegador i filtrar els esdeveniments XHR. D'aquesta manera al fer clic a una assignatura, un pla docent, una aula, etc. es pot veure a quines URLs es fan els http requests, és a dir en les URLs que utilitza el navegador per fer la petició, i entre aquestes hi haurà els endpoints esmentats abans.
 
-Aquest repositori funciona amb el framework NextJS, la web està publicada a Vercel i és accessible tant a [horaris-ub.vercel.app](https://horaris-ub.vercel.app/) com a [horaris.ub.fisica.cat](https://horaris.ub.fisica.cat).
+Aquest repositori funciona amb el framework NextJS, la web està publicada a Vercel i és accessible tant a [horaris-fisica-ub.vercel.app](https://horaris-fisica-ub.vercel.app/) com a [horaris.ub.fisica.cat](https://horaris.ub.fisica.cat).
 
 Recentment s'ha afegit a la web dues pestanyes addicionals a part de la guia acadèmica, una encarada a recrear el Chronos de la UB, és a dir mostrar els horaris de les assignatures d'un semestre i l'altra dedicada a permetre planificar quines assignatures matricular quan entra un nou any i veure com queda el calendari d'exàmens de les assignatures seleccionades.
 
