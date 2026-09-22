@@ -104,11 +104,11 @@
     /* transition: width 0.2s ease-in-out; */
 }
 
-.selectorItem:hover {
+.selectorItem:not(.selectorItemActive):hover {
     color: #888;
 }
 
-.selectorItem:hover::after {
+.selectorItem:not(.selectorItemActive):hover::after {
     width: 100%;
 }
 

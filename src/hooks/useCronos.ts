@@ -21,8 +21,8 @@ export function useCronos(anySeleccionat: number) {
         timeSlotStyle: "standard" | "custom";
         showClassrooms: boolean;
     }>>({ 
-        "1": { subjectColors: {}, subjectAliases: {}, activityAliases: {}, hiddenActivities: {}, timeSlotStyle: "standard", showClassrooms: false }, 
-        "2": { subjectColors: {}, subjectAliases: {}, activityAliases: {}, hiddenActivities: {}, timeSlotStyle: "standard", showClassrooms: false } 
+        "1": { subjectColors: {}, subjectAliases: {}, activityAliases: {}, hiddenActivities: {}, timeSlotStyle: "custom", showClassrooms: false }, 
+        "2": { subjectColors: {}, subjectAliases: {}, activityAliases: {}, hiddenActivities: {}, timeSlotStyle: "custom", showClassrooms: false } 
     });
 
     const handleSelectAssignatura = async (assignatura: any) => {

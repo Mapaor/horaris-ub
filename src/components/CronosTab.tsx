@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styles from "../styles/CronosTab.module.css";
 import globalStyles from "../styles/PaginaPrincipal.module.css";
 import Link from "next/link";
@@ -50,6 +50,30 @@ export function CronosTab({
     toggleActivityVisibility, updateTimeSlotStyle,
     toggleShowClassrooms, importCronosState
 }: CronosTabProps) {
+    const [selectedIndex, setSelectedIndex] = useState(-1);
+
+    useEffect(() => {
+        setSelectedIndex(-1);
+    }, [cronosSearchQuery]);
+
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (!cronosSearchQuery || cronosFilteredAssignatures.length === 0) return;
+
+        if (e.key === "ArrowDown") {
+            e.preventDefault();
+            setSelectedIndex(prev => (prev < cronosFilteredAssignatures.length - 1 ? prev + 1 : prev));
+        } else if (e.key === "ArrowUp") {
+            e.preventDefault();
+            setSelectedIndex(prev => (prev > 0 ? prev - 1 : prev));
+        } else if (e.key === "Enter") {
+            e.preventDefault();
+            if (selectedIndex >= 0 && selectedIndex < cronosFilteredAssignatures.length) {
+                handleSelectAssignatura(cronosFilteredAssignatures[selectedIndex]);
+                setSelectedIndex(-1);
+            }
+        }
+    };
+
     return (
         <div className={styles.cronosContainer}>
             <div className={styles.cronosModeSelectorWrapper}>
@@ -101,15 +125,17 @@ export function CronosTab({
                                 placeholder="Cerca assignatures..." 
                                 value={cronosSearchQuery}
                                 onChange={(e) => setCronosSearchQuery(e.target.value)}
+                                onKeyDown={handleKeyDown}
                                 className={styles.searchInput}
                             />
                             {cronosSearchQuery && cronosFilteredAssignatures.length > 0 && (
                                 <div className={styles.searchResults}>
-                                    {cronosFilteredAssignatures.map(assignatura => (
+                                    {cronosFilteredAssignatures.map((assignatura, index) => (
                                         <div 
                                             key={assignatura.idAssignatura} 
-                                            className={styles.searchResultItem}
-                                            onClick={() => handleSelectAssignatura(assignatura)}
+                                            className={`${styles.searchResultItem} ${index === selectedIndex ? styles.searchResultItemActive : ''}`}
+                                            onClick={() => { handleSelectAssignatura(assignatura); setSelectedIndex(-1); }}
+                                            onMouseEnter={() => setSelectedIndex(index)}
                                         >
                                             {assignatura.descAssignatura}
                                         </div>

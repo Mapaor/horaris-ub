@@ -240,7 +240,7 @@ export function HorariView({
         // Reset the input so the same file can be selected again if needed
         e.target.value = '';
     };
-    const isCustom = cronosConfig?.timeSlotStyle === "custom";
+    const isCustom = cronosConfig?.timeSlotStyle === "custom" || !cronosConfig?.timeSlotStyle;
 
     return (
         <div className={isFullscreen ? styles.fullscreenOverlay : ""} ref={fullscreenRef}>

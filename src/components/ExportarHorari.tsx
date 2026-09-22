@@ -102,6 +102,7 @@ export function ExportarHorari({
                                             value={currentColor}
                                             onChange={(e) => updateSubjectColor(id, e.target.value)}
                                             className={styles.nativeColorInput}
+                                            tabIndex={-1}
                                         />
                                         <div 
                                             className={styles.colorPickerDisplay} 
@@ -143,6 +144,7 @@ export function ExportarHorari({
                                             className={styles.visibilityToggleBtn}
                                             onClick={() => toggleActivityVisibility(activity)}
                                             title={isHidden ? "Mostrar a l'horari" : "Ocultar a l'horari"}
+                                            tabIndex={-1}
                                         >
                                             {isHidden ? <HideIcon /> : <ShowIcon />}
                                         </button>
@@ -167,15 +169,15 @@ export function ExportarHorari({
                             borderRadius: '6px', 
                             border: 'none', 
                             fontSize: '14px', 
-                            color: (cronosConfig.timeSlotStyle === "standard" || !cronosConfig.timeSlotStyle) ? '#0078d4' : '#475569', 
-                            backgroundColor: (cronosConfig.timeSlotStyle === "standard" || !cronosConfig.timeSlotStyle) ? 'white' : 'transparent',
-                            boxShadow: (cronosConfig.timeSlotStyle === "standard" || !cronosConfig.timeSlotStyle) ? '0 1px 2px rgba(0,0,0,0.05)' : 'none',
+                            color: (cronosConfig.timeSlotStyle === "custom" || !cronosConfig.timeSlotStyle) ? '#0078d4' : '#475569', 
+                            backgroundColor: (cronosConfig.timeSlotStyle === "custom" || !cronosConfig.timeSlotStyle) ? 'white' : 'transparent',
+                            boxShadow: (cronosConfig.timeSlotStyle === "custom" || !cronosConfig.timeSlotStyle) ? '0 1px 2px rgba(0,0,0,0.05)' : 'none',
                             cursor: 'pointer',
                             transition: 'all 0.2s'
                         }}
-                        onClick={() => updateTimeSlotStyle("standard")}
+                        onClick={() => updateTimeSlotStyle("custom")}
                     >
-                        8:00, 9:00, 10:00, 11:00...
+                        8:30, 9:30, 10:45, 11:45...
                     </button>
                     <button 
                         style={{ 
@@ -184,15 +186,15 @@ export function ExportarHorari({
                             borderRadius: '6px', 
                             border: 'none', 
                             fontSize: '14px', 
-                            color: cronosConfig.timeSlotStyle === "custom" ? '#0078d4' : '#475569', 
-                            backgroundColor: cronosConfig.timeSlotStyle === "custom" ? 'white' : 'transparent',
-                            boxShadow: cronosConfig.timeSlotStyle === "custom" ? '0 1px 2px rgba(0,0,0,0.05)' : 'none',
+                            color: cronosConfig.timeSlotStyle === "standard" ? '#0078d4' : '#475569', 
+                            backgroundColor: cronosConfig.timeSlotStyle === "standard" ? 'white' : 'transparent',
+                            boxShadow: cronosConfig.timeSlotStyle === "standard" ? '0 1px 2px rgba(0,0,0,0.05)' : 'none',
                             cursor: 'pointer',
                             transition: 'all 0.2s'
                         }}
-                        onClick={() => updateTimeSlotStyle("custom")}
+                        onClick={() => updateTimeSlotStyle("standard")}
                     >
-                        8:30, 9:30, 10:45, 11:45...
+                        8:00, 9:00, 10:00, 11:00...
                     </button>
                 </div>
             </div>
@@ -216,6 +218,13 @@ export function ExportarHorari({
                                 transition: 'background-color 0.2s'
                             }}
                             onClick={toggleShowClassrooms}
+                            tabIndex={0}
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter' || e.key === ' ') {
+                                    e.preventDefault();
+                                    toggleShowClassrooms();
+                                }
+                            }}
                         >
                             <div style={{
                                 width: '20px',

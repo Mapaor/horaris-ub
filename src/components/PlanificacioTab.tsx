@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styles from "../styles/PlanificacioTab.module.css";
 import { CalendarModal } from "./CalendarModal";
 import { SubjectCard } from "./SubjectCard";
@@ -33,6 +33,30 @@ export function PlanificacioTab({ allAssignatures }: PlanificacioTabProps) {
         moveSubject,
         toggleSubjectExam
     } = usePlanificacio(allAssignatures);
+
+    const [selectedIndex, setSelectedIndex] = useState(-1);
+
+    useEffect(() => {
+        setSelectedIndex(-1);
+    }, [searchQuery]);
+
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (!searchQuery || filteredAssignatures.length === 0) return;
+
+        if (e.key === "ArrowDown") {
+            e.preventDefault();
+            setSelectedIndex(prev => (prev < filteredAssignatures.length - 1 ? prev + 1 : prev));
+        } else if (e.key === "ArrowUp") {
+            e.preventDefault();
+            setSelectedIndex(prev => (prev > 0 ? prev - 1 : prev));
+        } else if (e.key === "Enter") {
+            e.preventDefault();
+            if (selectedIndex >= 0 && selectedIndex < filteredAssignatures.length) {
+                handleSelect(filteredAssignatures[selectedIndex]);
+                setSelectedIndex(-1);
+            }
+        }
+    };
 
     const renderColumn = (semestre: "1" | "2") => {
         const subjectsInColumn = selectedSubjects.filter(s => s.semestrePlaced === semestre);
@@ -127,16 +151,18 @@ export function PlanificacioTab({ allAssignatures }: PlanificacioTabProps) {
                     placeholder="Cerca assignatures..." 
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
+                    onKeyDown={handleKeyDown}
                     className={styles.searchInput}
                 />
                 
                 {searchQuery && (
                     <div className={styles.searchResults}>
-                        {filteredAssignatures.map(assignatura => (
+                        {filteredAssignatures.map((assignatura, index) => (
                             <div 
                                 key={assignatura.idAssignatura} 
-                                className={styles.searchResultItem}
-                                onClick={() => handleSelect(assignatura)}
+                                className={`${styles.searchResultItem} ${index === selectedIndex ? styles.searchResultItemActive : ''}`}
+                                onClick={() => { handleSelect(assignatura); setSelectedIndex(-1); }}
+                                onMouseEnter={() => setSelectedIndex(index)}
                             >
                                 {assignatura.descAssignatura}
                             </div>
