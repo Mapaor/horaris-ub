@@ -5,6 +5,7 @@ import styles from "../styles/PlanificacioTab.module.css";
 import { CalendarModal } from "./CalendarModal";
 import { SubjectCard } from "./SubjectCard";
 import { usePlanificacio } from "../hooks/usePlanificacio";
+import { useSearchShortcut } from "../hooks/useSearchShortcut";
 
 interface PlanificacioTabProps {
     allAssignatures: any[];
@@ -35,6 +36,7 @@ export function PlanificacioTab({ allAssignatures }: PlanificacioTabProps) {
     } = usePlanificacio(allAssignatures);
 
     const [selectedIndex, setSelectedIndex] = useState(-1);
+    const searchInputRef = useSearchShortcut();
 
     useEffect(() => {
         setSelectedIndex(-1);
@@ -147,8 +149,9 @@ export function PlanificacioTab({ allAssignatures }: PlanificacioTabProps) {
         <div className={styles.container}>
             <div className={styles.searchContainer}>
                 <input 
+                    ref={searchInputRef}
                     type="text" 
-                    placeholder="Cerca assignatures..." 
+                    placeholder="Cerca assignatures... (S)" 
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     onKeyDown={handleKeyDown}

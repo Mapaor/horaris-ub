@@ -4,6 +4,7 @@ import globalStyles from "../styles/PaginaPrincipal.module.css";
 import Link from "next/link";
 import { HorariView } from "./HorariView";
 import { ExportarHorari } from "./ExportarHorari";
+import { useSearchShortcut } from "../hooks/useSearchShortcut";
 
 interface CronosTabProps {
     cronosMode: "seleccionar" | "mostrar" | "dissenyar";
@@ -51,6 +52,7 @@ export function CronosTab({
     toggleShowClassrooms, importCronosState
 }: CronosTabProps) {
     const [selectedIndex, setSelectedIndex] = useState(-1);
+    const searchInputRef = useSearchShortcut();
 
     useEffect(() => {
         setSelectedIndex(-1);
@@ -121,8 +123,9 @@ export function CronosTab({
                         </div>
                         <div className={styles.searchContainer}>
                             <input 
+                                ref={searchInputRef}
                                 type="text" 
-                                placeholder="Cerca assignatures..." 
+                                placeholder="Cerca assignatures... (S)" 
                                 value={cronosSearchQuery}
                                 onChange={(e) => setCronosSearchQuery(e.target.value)}
                                 onKeyDown={handleKeyDown}

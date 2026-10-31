@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styles from "../styles/GuiaAcademica.module.css";
 import Link from "next/link";
+import { useSearchShortcut } from "../hooks/useSearchShortcut";
 
 interface GuiaAcademicaProps {
     assignaturesPerCurs: Record<string, Record<string, any[]>>;
@@ -9,6 +10,7 @@ interface GuiaAcademicaProps {
 
 export function GuiaAcademica({ assignaturesPerCurs, nomsCursos }: GuiaAcademicaProps) {
     const [searchQuery, setSearchQuery] = useState("");
+    const searchInputRef = useSearchShortcut();
     const queryNormalized = searchQuery.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
 
     return (
@@ -16,8 +18,9 @@ export function GuiaAcademica({ assignaturesPerCurs, nomsCursos }: GuiaAcademica
             <div className={styles.searchSection}>
                 <div className={styles.searchContainer}>
                     <input 
+                        ref={searchInputRef}
                         type="text" 
-                        placeholder="Cerca assignatures..." 
+                        placeholder="Cerca assignatures... (S)" 
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                         className={styles.searchInput}
