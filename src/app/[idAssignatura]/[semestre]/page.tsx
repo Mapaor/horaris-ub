@@ -23,6 +23,15 @@ export default function AssignaturaSemestre() {
         }
     }, [idAssignatura, semestre]);
 
+    // The section headings render only after the subject data has loaded, so
+    // the browser's initial fragment jump may happen too early on direct links.
+    useEffect(() => {
+        if (!assignatura || !window.location.hash) return;
+
+        const sectionId = decodeURIComponent(window.location.hash.slice(1));
+        document.getElementById(sectionId)?.scrollIntoView();
+    }, [assignatura]);
+
     if (!assignatura) return <p>Carregant...</p>;
 
     const taulaHoraris = assignatura.activitats
@@ -44,7 +53,7 @@ export default function AssignaturaSemestre() {
             <Header breadcrumbs={breadcrumbs} />
             <h1 className={styles.titolPrincipal}>{assignatura.descAssignatura} - {semestre}Sem</h1>
 
-            <h2 className={styles.titolSeccio}>Grups</h2>
+            <h2 id="Grups" className={styles.titolSeccio}>Grups</h2>
             <div className={styles.grupsContainer}>
                 {assignatura.activitats?.map((activitat: any) =>
                     activitat.grups.map((grup: any) => (
@@ -70,12 +79,12 @@ export default function AssignaturaSemestre() {
                 )}
             </div>
 
-            <h2 className={styles.titolSeccio}>Horari</h2>
+            <h2 id="Horari" className={styles.titolSeccio}>Horari</h2>
             <div className={styles.tableContainer}>
                 <div dangerouslySetInnerHTML={{ __html: taulaHoraris }} />
             </div>
 
-            <h2 className={styles.titolSeccio}>Calendari d'exàmens</h2>
+            <h2 id="Calendari-d-examens" className={styles.titolSeccio}>Calendari d'exàmens</h2>
             <div className={styles.examensContainer}>
                 {examens?.map((activitat: any) =>
                     activitat.grups.map((grup: any) => (
