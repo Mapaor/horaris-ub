@@ -203,7 +203,9 @@ export function CronosTab({
                                                 )}
                                             </div>
                                             <Link 
-                                                href={`/${assignatura.idAssignatura}/${cronosSemestre}`} 
+                                                href={`/${assignatura.idAssignatura}/${cronosSemestre}#Horari`}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
                                                 className={styles.horariLinkBtn}
                                             >
                                                 Consultar Horaris

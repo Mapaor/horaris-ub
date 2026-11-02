@@ -27,6 +27,15 @@ export default function PlaDocent() {
         }
     }, [idAssignatura]);
 
+    // Pla docent arrives asynchronously, so handle direct links once its
+    // section headings have been rendered.
+    useEffect(() => {
+        if (!plaDocentData || !window.location.hash) return;
+
+        const sectionId = decodeURIComponent(window.location.hash.slice(1));
+        document.getElementById(sectionId)?.scrollIntoView();
+    }, [plaDocentData]);
+
     if (!plaDocentData) {
         return <p>Carregant Pla Docent...</p>;
     }
@@ -45,7 +54,7 @@ export default function PlaDocent() {
         <div className={styles.container}>
             <Header breadcrumbs={breadcrumbs} />
             <h1 className={styles.titolPrincipal}>{dadesGenerals.descripcioAssig}</h1>
-            <h2 className={styles.titolSeccio}>Informació General</h2>
+            <h2 id="Informacio-General" className={styles.titolSeccio}>Informació General</h2>
             <ul className={styles.llista}>
                 <li className={styles.elementLlista}>
                     <strong className={styles.textDestacat}>Departament:</strong> {dadesGenerals.descripcioDepartament}
@@ -61,7 +70,7 @@ export default function PlaDocent() {
                 </li>
             </ul>
 
-            <h2 className={styles.titolSeccio}>Competències</h2>
+            <h2 id="Competencies" className={styles.titolSeccio}>Competències</h2>
             <ul className={styles.llista}>
                 {definicioPlaDocent.competencies.map((competencia: any) => (
                     <li key={competencia.codiCompetencia} className={styles.elementLlista}>
@@ -70,7 +79,7 @@ export default function PlaDocent() {
                 ))}
             </ul>
 
-            <h2 className={styles.titolSeccio}>Objectius</h2>
+            <h2 id="Objectius" className={styles.titolSeccio}>Objectius</h2>
             <ul className={styles.llista}>
                 {definicioPlaDocent.objectius.map((objectiu: any) => (
                     <li key={objectiu.codiObjectiu} className={styles.elementLlista}>
@@ -79,7 +88,7 @@ export default function PlaDocent() {
                 ))}
             </ul>
 
-            <h2 className={styles.titolSeccio}>Temari</h2>
+            <h2 id="Temari" className={styles.titolSeccio}>Temari</h2>
             <ul className={styles.llista}>
                 {definicioPlaDocent.temari.map((bloc: any) => (
                     <li key={bloc.codiBloc} className={styles.elementLlista}>
@@ -99,18 +108,18 @@ export default function PlaDocent() {
                 ))}
             </ul>
 
-            <h2 className={styles.titolSeccio}>Metodologia</h2>
+            <h2 id="Metodologia" className={styles.titolSeccio}>Metodologia</h2>
             <div dangerouslySetInnerHTML={{ __html: definicioPlaDocent.metodologia }} />
-            <h2 className={styles.titolSeccio}>Avaluació</h2>
+            <h2 id="Avaluacio" className={styles.titolSeccio}>Avaluació</h2>
             <div>
-                <h3 className={styles.titolSubseccio}>Avaluació Continuada</h3>
+                <h3 id="Avaluacio-Continuada" className={styles.titolSubseccio}>Avaluació Continuada</h3>
                 <div dangerouslySetInnerHTML={{ __html: definicioPlaDocent.avaluacio.avaluacioContinuada }} />
             </div>
             <div>
-                <h3 className={styles.titolSubseccio}>Avaluació Única</h3>
+                <h3 id="Avaluacio-Unica" className={styles.titolSubseccio}>Avaluació Única</h3>
                 <div dangerouslySetInnerHTML={{ __html: definicioPlaDocent.avaluacio.avaluacioUnica }} />
             </div>
-            <h2 className={styles.titolSeccio}>Bibliografia</h2>
+            <h2 id="Bibliografia" className={styles.titolSeccio}>Bibliografia</h2>
             <ul className={styles.llista}>
                 {definicioPlaDocent.fontsInformacio.map((font: any) => (
                     <li key={font.codiFont} className={styles.elementLlista}>
